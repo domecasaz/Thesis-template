@@ -3,11 +3,113 @@
 % !TEX root = ../tesi.tex
 
 %**************************************************************
-\chapter{Processi e metodologie}
-\label{cap:processi-metodologie}
+\chapter{Descrizione dello stage}
+\label{cap:descrizione-stage}
 %**************************************************************
 
-\intro{Brevissima introduzione al capitolo}\\
+\intro{In questo capitolo è presente un’analisi preventiva dei rischi che potevano venire riscontrati durante lo svolgimento dello stage, la lista degli obiettivi da raggiungere e la pianificazione delle ore di lavoro.}\\
 
 %**************************************************************
-\section{Processo sviluppo prodotto}
+
+\section{Analisi preventiva dei rischi}
+
+Durante la fase di analisi iniziale sono stati individuati dei possibili rischi che si potranno incontrare durante il percorso di stage. Si è quindi proceduto a elaborare delle possibili soluzioni per far fronte a tali rischi.
+
+\begin{enumerate}
+    \item \textbf{Inesperienza tecnologica:} alcune tecnologie incluse nel progetto sono parzialmente o completamente sconosciute.\\
+    \textbf{Soluzione:} studio delle tecnologie nelle prime settimane di stage tramite documentazione ufficiale e corsi forniti dall'azienda.
+    \item \textbf{Problematiche hardware:} le macchine utilizzate durante l'implementazione possono essere soggette a malfunzionamenti o guasti, con conseguenti perdite di dati.\\
+    \textbf{Soluzione:} condivisione giornaliera su una repository del lavoro svolto.
+    \item \textbf{Monitoraggio scadenze:} a causa di altri impegni lavorativi. non sarà sempre possibile confrontarsi con il tutor aziendale per aggiornarlo sullo svolgimento del lavoro.\\
+    \textbf{Soluzione:} creazione di un foglio Excel condiviso contente un report giornaliero delle attività svolte.
+\end{enumerate}
+
+%**************************************************************
+
+\section{Requisiti e obiettivi}
+\subsection*{Notazione}
+Si farà riferimento ai requisiti secondo le seguenti notazioni:
+\begin{itemize}
+	\item \textit{O} per i requisiti obbligatori, vincolanti in quanto obiettivo primario richiesto dal committente;
+	\item \textit{D} per i requisiti desiderabili, non vincolanti o strettamente necessari,
+		  ma dal riconoscibile valore aggiunto;
+	\item \textit{F} per i requisiti facoltativi, rappresentanti valore aggiunto non strettamente 
+		  competitivo.
+\end{itemize}
+
+Le sigle precedentemente indicate saranno seguite da una coppia sequenziale di numeri, identificativo del requisito.
+
+\subsection*{Obiettivi fissati}
+Si prevede lo svolgimento dei seguenti obiettivi:
+\begin{itemize}
+	\item Obbligatori
+	\begin{itemize}
+		\item \underline{\textit{O01}}: Acquisizione competenze sulle tematiche sopra descritte;
+    	\item \underline{\textit{O02}}: Capacità di raggiungere gli obiettivi richiesti in autonomia seguendo il cronoprogramma;
+    	\item \underline{\textit{O03}}: Portare a termine le implementazioni previste con una percentuale di superamento pari al
+         80\%.
+	\end{itemize}
+	
+	\item Desiderabili 
+	\begin{itemize}
+		\item \underline{\textit{D01}}: Portare a termine le implementazioni previste con una percentuale di superamento pari al 100\%.
+	\end{itemize}
+	
+	\item Facoltativi
+	\begin{itemize}
+		\item \underline{\textit{F01}}: Apportare un valore aggiunto al gruppo di lavoro durante le fasi di progettazione delle interfacce.
+	\end{itemize} 
+\end{itemize}
+
+%**************************************************************
+
+\section{Pianificazione del lavoro}
+Lo stage ha una durata di 8 settimane e prevede lo svolgimento di 320 ore effettive di lavoro. É diviso in due parti, il primo mese di studio delle tecnologie e il secondo di progettazione e implementazione delle maschere.\\
+La ripartizione settimanale delle attività è la seguente:
+\begin{itemize}
+        \item \textbf{Prima Settimana (40 ore)}
+        \begin{itemize}
+            \item Incontro con persone coinvolte nel progetto per discutere i requisiti e le richieste
+            relativamente al sistema da sviluppare;
+            \item  Presentazione strumenti di lavoro per la condivisione del materiale di studio e per la gestione
+            dell’avanzamento;
+            \item Condivisione scaletta di argomenti;
+            \item Ripasso del linguaggio Java SE;
+            \item Ripasso concetti Web (Servlet, servizi Rest, Json ecc.).
+        \end{itemize}
+        \item \textbf{Seconda Settimana (40 ore)} 
+        \begin{itemize}
+            \item Studio principi generali di Spring Core (IOC, Dependency Injection);
+            \item Studio SpringBoot;
+            \item Studio Spring Data/DataRest.
+        \end{itemize}
+        \item \textbf{Terza Settimana (40 ore)} 
+        \begin{itemize}
+            \item Ripasso linguaggio Javascript;
+            \item Studio del linguaggio TypeScript.
+        \end{itemize}
+        \item \textbf{Quarta Settimana (40 ore)} 
+        \begin{itemize}
+            \item Studio piattaforma NodeJS e AngularCLI;
+            \item Studio framework Angular.
+        \end{itemize}
+        \item \textbf{Quinta Settimana (40 ore)} 
+        \begin{itemize}
+            \item Analisi e studio del progetto ShopChain;
+            \item Progettazione ed implementazione della nuova maschera di accesso.
+        \end{itemize}
+        \item \textbf{Sesta Settimana (40 ore)} 
+        \begin{itemize}
+            \item Progettazione ed implementazione nuova maschera "Gestione Profilo Venditore";
+            \item Scrittura dei service (su front-end) di chiamata al back-end.
+        \end{itemize}
+        \item \textbf{Settima Settimana (40 ore)} 
+        \begin{itemize}
+            \item Progettazione ed implementazione nuova maschera "Gestione Profilo Acquirente";
+            \item Scrittura dei service (su front-end) di chiamata al back-end.
+        \end{itemize}
+        \item \textbf{Ottava Settimana - Conclusione (40 ore)} 
+        \begin{itemize}
+            \item Termine integrazioni e collaudo finale.
+        \end{itemize}
+\end{itemize}

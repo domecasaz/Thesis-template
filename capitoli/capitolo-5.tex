@@ -7,39 +7,43 @@
 \label{cap:progettazione-codifica}
 %**************************************************************
 
-\intro{Breve introduzione al capitolo}\\
+\intro{In questo capitolo vengono descritte in primo luogo le tecnologie utilizzate durante il progetto e in secondo luogo la progettazione e l’implementazione delle maschere e dei servizi dell’applicazione.}\\
 
 %**************************************************************
-\section{Tecnologie e strumenti}
+\section{Tecnologie}
 \label{sec:tecnologie-strumenti}
 
 Di seguito viene data una panoramica delle tecnologie e strumenti utilizzati.
 
-\subsection*{Tecnologia 1}
-Descrizione Tecnologia 1.
+\subsection*{TypeScript}
+TypeScript è un linguaggio di programmazione open source che basa le sue caratteristiche su ECMAScript 6. Il linguaggio estende la sintassi del linguaggio JavaScript facendo si che qualsiasi programma scritto in JavaScript possa funzionare anche con TypeScript. Tra le principali funzionalità aggiuntive di TypeScript ci sono la possibilità di tipizzare le variabili e di creare interfacce e classi.\cite{site:typescript}
 
-\subsection*{Tecnologia 2}
-Descrizione Tecnologia 2
+\subsection*{Angular}
+Angular è un framework JavaScript open source per creare applicazioni web dinamiche grazie a una serie di funzionalità e strumenti forniti dallo stesso. L’architettura modulare consente di strutturare al meglio un’applicazione web e di avere un elevato riutilizzo del codice. Permette inoltre un’elevata manutenibilità in quanto ogni componente è adibito ad un’unica funzione. Utilizzato per sviluppare l’applicazione web.\cite{site:angular}
 
-%**************************************************************
-\section{Ciclo di vita del software}
-\label{sec:ciclo-vita-software}
+\subsection*{Angular Material}
+Angular Material è una libreria grafica creata appositamente per Angular ed è basata sullo stile grafico di Google. Mette a disposizione componenti grafiche già implementate e testate anche dal punto di vista dell’accessibilità. Utilizzato per sviluppare la grafica delle pagine web.\cite{site:angular-material}
+
+\subsection*{Node.js}
+Node.js è un framework utilizzato da Angular per gestire le dipendenze. Permette
+di dichiarare due insiemi di dipendenze: per gli sviluppatori e per far funzionare
+l’applicativo. In questo modo è possibile differenziare quali librerie si possono tralasciare in fase di deploy dell’applicazione perché, ad esempio, necessarie solo per effettuare i test. Permette inoltre, usando dei semplici comandi, di scaricare all’interno del progetto le librerie necessarie, funzionalità molto utile in fase di \gls{cicdg}.\cite{site:node}
 
 %**************************************************************
 \section{Progettazione}
 \label{sec:progettazione}
 
-\subsubsection{Namespace 1} %**************************
-Descrizione namespace 1.
+\subsubsection{Architettura di Angular}
+Il componente principale di Angular è il modulo, che raggruppa un insieme di funzionalità legate tra loro. Ogni modulo contiene un component alla quale è associato un template.\\
+Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive.
+I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
+Le direttive vengono richiamate dai template e permettono di personalizzare il codice HTML creando dei tag propri che è poi possibile riutilizzare in diverse viste.\\
+Ogni component può contenere diversi component figli, in questo modo si può creare una maschera in modo modulare. Si può creare un component padre che rappresenta la pagina completa e poi diversi figli per ogni elemento contenuto in quella pagina,
+per esempio un component per il menu, un component per la sezione delle notizie e così via. Ognuno dei component figli si occuperà così di gestire la grafica di quella determinata funzionalità e di chiamare i servizi di cui necessita e sarà poi compito del
+padre mettere i figli insieme. Così facendo, si rende la struttura dell’applicazione più ordinata e il codice più mantenibile.
 
-\begin{namespacedesc}
-    \classdesc{Classe 1}{Descrizione classe 1}
-    \classdesc{Classe 2}{Descrizione classe 2}
-\end{namespacedesc}
-
-
-%**************************************************************
-\section{Design Pattern utilizzati}
-
-%**************************************************************
-\section{Codifica}
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.8\columnwidth]{immagini/AngularArchitecture.jpg} 
+    \caption{Schema logico dell'architettura si un applicazione web basata su Angular}\cite{site:angular-architecture}
+\end{figure}
