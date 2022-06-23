@@ -15,25 +15,15 @@
 \subsection{Attori principali}
 Durante la fase di analisi sono stati individuati i seguenti attori principali:
 \begin{itemize}
-    \item Utente non riconosciuto: attore che indica un utente che non ha ancora eseguito l'autenticazione tramite \gls{metamaskg};
-    \item Utente riconosciuto: attore che indica un utente che ha eseguito l'autenticazione tramite \gls{metamaskg} e può accedere creazione di un ordine o vedere le informazioni relative agli ordini. Si divide in utente Acquirente e utente Venditore;
-    \item Acquirente: attore che può creare ordini, visualizzare la lista degli ordini a lui correlati e richiedere il reso di alcuni ordini;
-    \item Venditore: attore che può visualizzare la lista degli ordini a lui correlati ed eseguire alcune operazioni sugli ordini, quali cambiare lo stato dell'ordine, cancellarlo o confermare richieste di reso.
+    \item Utente non riconosciuto: attore che indica un utente che non ha ancora eseguito l'autenticazione tramite \gls{metamaskg}\glsfirstoccur;
+    \item Utente riconosciuto: attore che indica un utente che ha eseguito l'autenticazione tramite MetaMask e può accedere creazione di un ordine o vedere le informazioni relative agli ordini.
 \end{itemize}
 
 \subsection{Attori secondari}
 Durante la fase di analisi sono stati individuati i seguenti attori secondari:
 \begin{itemize}
-    \item \gls{metamaskg}: plugin esterno al sistema che gestisce i wallet degli utenti riconosciuti e permette loro di essere riconosciuti e accedere all'applicazione web.
+    \item MetaMask: plugin esterno al sistema che gestisce i wallet degli utenti riconosciuti e permette loro di essere riconosciuti e accedere all'applicazione web.
 \end{itemize}
-
-\newpage
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=0.6\columnwidth]{immagini/usecase/GerarchiaAttori.png} 
-    \caption{Gerarchia degli attori principali}
-\end{figure}
 
 \subsection{Ordini}
 Ogni ordine è caratterizzato da:
@@ -46,9 +36,10 @@ Ogni ordine è caratterizzato da:
 \end{itemize}
 
 Di seguito è riportata la tabella che descrive i diversi tipi di stato che un ordine può assumere durante il suo ciclo di vita.
-
+\rowcolors{2}{gray!25}{white}
 \begin{longtable}[c]{|l|p{7cm}|p{3cm}|}
 \hline
+\rowcolor{gray!40}
 \textbf{Stato} & \textbf{Descrizione} & \textbf{Precondizione}  \\ \hline
 \endhead
 
@@ -62,7 +53,7 @@ Refunded & Il venditore ha confermato la richiesta di rimborso & Refund Asked \\
 
 \subsection{Elenco casi d'uso}
 Per lo studio dei casi di utilizzo del prodotto sono stati creati dei diagrammi.
-I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi di tipo \gls{uml} dedicati alla descrizione delle funzioni o servizi offerti da un sistema, così come sono percepiti e utilizzati dagli attori che interagiscono col sistema stesso.
+I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi di tipo \gls{uml}\glsfirstoccur dedicati alla descrizione delle funzioni o servizi offerti da un sistema, così come sono percepiti e utilizzati dagli attori che interagiscono col sistema stesso.
 
 \subsection{Landing Page}
 \begin{figure}[!h] 
@@ -74,11 +65,11 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
 \begin{usecase}{1}{Connessione al wallet}
 \usecaseactorsP{Utente non riconosciuto}
 \usecaseactorsS{MetaMask}
-\usecasepre{Il Compratore non ha effettuato il collegamento al proprio wallet}
-\usecasepost{Il Compratore si è identificato e può proseguire con il pagamento}
-\usecasedesc{Il Compratore vuole interagire con lo smart contract di ShopChain, quindi deve collegare il wallet ad esso per poter autorizzare successivamente le transazioni.
+\usecasepre{L'Utente non ha effettuato il collegamento al proprio wallet}
+\usecasepost{L'Utente si è identificato e può proseguire con il pagamento}
+\usecasedesc{L'Utente vuole interagire con lo smart contract di ShopChain, quindi deve collegare il wallet ad esso per poter autorizzare successivamente le transazioni.
 \begin{enumerate}
-    \item Il Compratore clicca su “Connetti wallet”;
+    \item L'Utente clicca su “Connetti wallet”;
     \item Si apre il pop-up di MetaMask dove egli inserisce i dati;
     \item L’utente dà il permesso allo smart contract di interagire con il proprio wallet.
 \end{enumerate}
@@ -87,10 +78,10 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
 \end{usecase}
 
 \begin{usecase}{2}{Visualizzazione Dati Transazione}
-\usecaseactorsP{Compratore}
-\usecasepre{Il Compratore ha iniziato la fase di pagamento nella piattaforma e-commerce e ha eseguito l’accesso al wallet}
-\usecasepost{Il Compratore ha visualizzato i dati della transazione}
-\usecasedesc{Il Compratore visualizza nella Landing Page:
+\usecaseactorsP{Utente riconosciuto}
+\usecasepre{L'Utente ha iniziato la fase di pagamento nella piattaforma e-commerce e ha eseguito l’accesso al wallet}
+\usecasepost{L'Utente ha visualizzato i dati della transazione}
+\usecasedesc{L'Utente visualizza nella Landing Page:
 \begin{enumerate}
     \item l’importo corrispondente al/i prodotto/i selezionato/i;
     \item eventuali fee stimate (medie);
@@ -101,13 +92,13 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
 \end{usecase}
 
 \begin{usecase}{3}{Conferma Pagamento}
-\usecaseactorsP{Compratore}
+\usecaseactorsP{Utente riconosciuto}
 \usecaseactorsS{MetaMask}
-\usecasepre{Il Compratore è stato riconosciuto e ha visualizzato i dati della transazione}
+\usecasepre{L'Utente è stato riconosciuto e ha visualizzato i dati della transazione}
 \usecasepost{La transazione è stata avviata e le criptovalute si trovano nello smart contract}
 \usecasedesc{
 \begin{enumerate}
-    \item Il Compratore autorizza la transazione iniziata;
+    \item L'Utente autorizza la transazione iniziata;
     \item l’interfaccia di MetaMask permette la conferma;
     \item l’importo viene trasferito dal suo wallet allo smart contract;
     \item viene creato l’ordine nello smart contract in stato "Created".
@@ -116,6 +107,8 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
 \label{uc:conferma-pagamento}
 \end{usecase}
 
+\newpage
+
 \subsection{Applicazione Web}
 \begin{figure}[!h] 
     \centering 
@@ -123,13 +116,11 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
     \caption{Use Cases - Applicazione Web}
 \end{figure}
 
-\newpage
-
 \begin{usecase}{4}{Visualizzazione Ordini}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente è stato riconosciuto tramite la connessione al suo wallet}
 \usecasepost{L’Utente ha visualizzato gli ordini relativi al wallet collegato}
-\usecasedesc{L’utente può visualizzare una tabella contenente gli ordini (in cui egli è uno degli attori) con identificativo, indirizzo dell’altro attore, costo, stato.}
+\usecasedesc{L’Utente può visualizzare una tabella contenente gli ordini (in cui egli è uno degli attori) con identificativo, indirizzo dell’altro attore, costo, stato.}
 \label{uc:visualizzazione-ordini}
 \end{usecase}
 
@@ -143,9 +134,9 @@ I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi d
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente ha visualizzato la lista degli ordini relativa al suo indirizzo}
 \usecasepost{L’Utente ha visualizzato i dati specifici di un ordine}
-\usecasedesc{L’utente può visualizzare i dettagli di un ordine selezionato,
+\usecasedesc{L’Utente può visualizzare i dettagli di un ordine selezionato,
 inclusi il log degli stati e le eventuali operazioni disponibili.}
-\usecasealt{Se l’utente prova a visualizzare un ordine al quale non ha accesso, viene visualizzata una pagina di errore.}
+\usecasealt{Se l’Utente prova a visualizzare un ordine al quale non ha accesso, viene visualizzata una pagina di errore.}
 \label{uc:visualizzazione-singolo-ordine}
 \end{usecase}
 
@@ -162,8 +153,6 @@ inclusi il log degli stati e le eventuali operazioni disponibili.}
 \label{uc:errore-ordine-inacessibile}
 \end{usecase}
 
-\newpage
-
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=1\columnwidth]{immagini/usecase/UC4.1.png} 
@@ -174,15 +163,17 @@ inclusi il log degli stati e le eventuali operazioni disponibili.}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente si trova nella sezione "Visualizzazione Singolo Ordine nella Lista" (UC4.1) e desidera visualizzare l’id dell’ordine}
 \usecasepost{L’Utente ha visualizzato l’id dell’ordine}
-\usecasedesc{L’utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’id.}
+\usecasedesc{L’Utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’id.}
 \label{uc:visualizzazione-id-ordine}
 \end{usecase}
+
+\newpage
 
 \begin{usecase}{4.1.2}{Visualizzazione Indirizzo}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente si trova nella sezione "Visualizzazione Singolo Ordine nella Lista" (UC4.1) e desidera visualizzare l’indirizzo dell’altro attore dell’ordine}
 \usecasepost{L’Utente ha visualizzato l’indirizzo dell’altro attore dell’ordine}
-\usecasedesc{L’utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’indirizzo dell’altro attore dell’ordine (venditore per il compratore e viceversa).}
+\usecasedesc{L’Utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’indirizzo dell’altro attore dell’ordine (venditore per il compratore e viceversa).}
 \label{uc:visualizzazione-indirizzo}
 \end{usecase}
 
@@ -190,25 +181,25 @@ inclusi il log degli stati e le eventuali operazioni disponibili.}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente si trova nella sezione "Visualizzazione Singolo Ordine nella Lista" (UC4.1) e desidera visualizzare l’ammontare dell’ordine}
 \usecasepost{L’Utente ha visualizzato l’ammontare dell’ordine}
-\usecasedesc{L’utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’ammontare dell’ordine.}
+\usecasedesc{L’Utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente l’ammontare dell’ordine.}
 \label{uc:visualizzazione-ammontare-ordine}
 \end{usecase}
-
-\newpage
 
 \begin{usecase}{4.1.4}{Visualizzazione Stato Ordine}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente si trova nella sezione "Visualizzazione Singolo Ordine nella Lista" (UC4.1) e desidera visualizzare lo stato dell’ordine}
 \usecasepost{L’Utente ha visualizzato lo stato dell’ordine}
-\usecasedesc{L’utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente lo stato in cui si trova l’ordine.}
+\usecasedesc{L’Utente sta visualizzando i dettagli di un singolo ordine e tra i campi è presente lo stato in cui si trova l’ordine.}
 \label{uc:visualizzazione-stato-ordine}
 \end{usecase}
+
+\newpage
 
 \begin{usecase}{5}{Filtra Ordini}
 \usecaseactorsP{Utente riconosciuto}
 \usecasepre{L’Utente è stato riconosciuto tramite la connessione al suo wallet}
 \usecasepost{L’Utente ha visualizzato i dati relativi ad ordini che corrispondono ai requisiti di ricerca}
-\usecasedesc{L’utente può visualizzare in modo più ordinato le transazioni
+\usecasedesc{L’Utente può visualizzare in modo più ordinato le transazioni
 alle quali è interessato attraverso dei filtri.}
 \label{uc:filtra-ordini}
 \end{usecase}
@@ -232,8 +223,6 @@ alle quali è interessato attraverso dei filtri.}
 \usecasealt{Se l’Utente applica un filtro che non viene rispettato da nessun ordine, viene visualizzato un errore.}
 \label{uc:filtra-ordini-stato}
 \end{usecase}
-
-\newpage
 
 \begin{usecase}{5.2}{Filtra per Indirizzo}
 \usecaseactorsP{Utente riconosciuto}
@@ -280,7 +269,7 @@ alle quali è interessato attraverso dei filtri.}
 \usecaseactorsP{Utente riconosciuto}
 \usecaseactorsS{MetaMask}
 \usecasepre{L’Utente è stato riconosciuto tramite la connessione al suo wallet}
-\usecasepost{si trova nella pagina di visualizzazione dettagli del singolo ordine}
+\usecasepost{L'Utente si trova nella pagina di visualizzazione dettagli del singolo ordine}
 \usecasedesc{
 \begin{itemize}
     \item L’Utente clicca sul bottone "Vedi dettagli";
@@ -290,6 +279,8 @@ alle quali è interessato attraverso dei filtri.}
 \label{uc:visualizzazione-dettagli-ordine}
 \end{usecase}
 
+\newpage
+
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=1\columnwidth]{immagini/usecase/UC7.png} 
@@ -297,13 +288,13 @@ alle quali è interessato attraverso dei filtri.}
 \end{figure}
 
 \begin{usecase}{7.1}{Chiedi Rimborso}
-\usecaseactorsP{Compratore}
+\usecaseactorsP{Utente riconosciuto}
 \usecaseactorsS{MetaMask}
-\usecasepre{Il Venditore si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera annullare uno degli acquisti sul proprio e-commerce}
-\usecasepost{Il Compratore ha richiesto il reso}
+\usecasepre{L'Utente si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera annullare uno degli acquisti sul proprio e-commerce}
+\usecasepost{L'Utente ha richiesto il reso}
 \usecasedesc{
 \begin{itemize}
-    \item Il Compratore clicca sul bottone "Chiedi Reso";
+    \item L'Utente clicca sul bottone "Chiedi Reso";
     \item viene aperto il pop-up di MetaMask che richiede la conferma di una transazione con fee minima affinché venga emessa la richiesta di rimborso;
     \item lo stato dell’ordine passa da "Confirmed" a "Refund Asked".
 \end{itemize}
@@ -311,81 +302,105 @@ alle quali è interessato attraverso dei filtri.}
 \label{uc:chiedi-rimborso}
 \end{usecase}
 
-\begin{usecase}{7.2}{Cancellazione Ordine}
-\usecaseactorsP{Venditore}
-\usecaseactorsS{MetaMask}
-\usecasepre{Il Venditore si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera annullare uno degli acquisti sul proprio e-commerce}
-\usecasepost{I soldi precedentemente depositati dal Compratore nello smart contract vengono restituiti al Compratore}
-\usecasedesc{
-\begin{itemize}
-    \item Il Venditore clicca sul bottone "Delete Order" e conferma la scelta;
-    \item il pop-up di MetaMask permette di confermare l’operazione;
-    \item la WebApp attiva un metodo dello smart contract che procederà a rendere il deposito al wallet del Compratore;
-    \item l’ordine in questione passa allo stato "Deleted";
-    \item Il Compratore viene notificato via App mobile del fatto che la transazione è stata vanificata e la merce non arriverà.
-\end{itemize}
-}
-\label{uc:cancella-ordine}
+\begin{usecase}{7.2}{Visualizza Log di Cambio Stato}
+\usecaseactorsP{Utente riconosciuto}
+\usecasepre{L'Utente si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera visualizzare il log di cambio stato dell'ordine}
+\usecasepost{L’Utente ha visualizzato il log di cambio stato dell'ordine}
+\usecasedesc{L’Utente sta visualizzando i dettagli di un singolo ordine e sulla pagina è presente il log di cambio stati dell'ordine in cui è presente lo stato dell'ordine e il timestamp di quando l'ordine ha cambiato stato.}
+\label{uc:visualizzazione-log}
 \end{usecase}
 
-\begin{usecase}{7.3}{Conferma Richiesta Reso}
-\usecaseactorsP{Venditore}
-\usecaseactorsS{MetaMask}
-\usecasepre{Il Venditore si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera confermare la richiesta di reso effettuata da un Compratore}
-\usecasepost{Il Venditore restituisce l’importo corrispondente all’ordine di cui è stato richiesto il reso dal Compratore}
-\usecasedesc{
-\begin{itemize}
-    \item Il Venditore clicca sul bottone "Refund Order" e conferma la scelta;
-    \item il pop-up di MetaMask permette di confermare l’operazione;
-    \item la WebApp attiva un metodo dello smart contract che procederà a trasferire l’importo corretto dal wallet del Venditore al wallet del Compratore;
-    \item l’ordine in questione passa allo stato "Refunded";
-    \item il compratore viene notificato via App del fatto che l’ordine è stato rimborsato.
-\end{itemize}
-}
-\label{uc:richiesta-reso}
-\end{usecase}
-
-\begin{usecase}{7.4}{Cambio Stato Ordine in Shipped}
-\usecaseactorsP{Venditore}
-\usecaseactorsS{MetaMask}
-\usecasepre{Il Venditore si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera notificare il compratore dell’invio della merce}
-\usecasepost{Lo stato dell’ordine selezionato diventa "Shipped"}
 \newpage
-\usecasedesc{
+
+%**************************************************************
+\section{Tracciamento dei requisiti}
+
+Durante la fase di analisi dei requisiti e di individuazione degli use cases è stata stilata una tabella che tracci i requisiti in rapporto agli use cases. Sono stati individuati diversi tipi di requisiti e si è quindi fatto utilizzo di un codice identificativo per distinguerli.\\
+Il codice dei requisiti è così strutturato R[F/Q][N/D] dove:
 \begin{itemize}
-    \item Il Venditore clicca sul bottone "Set as Shipped" e conferma la scelta;
-    \item il pop-up di MetaMask permette di confermare l’operazione;
-    \item la WebApp attiva un metodo dello smart contract che procederà a modificare lo stato;
-    \item l’ordine in questione passa allo stato "Shipped";
-    \item il Compratore viene notificato via App del fatto che la merce è stata inviata.
+    \item[] R = Requisito;
+    \item[] F = Funzionale;
+    \item[] Q = Qualitativo;
+    \item[] N = Necessario (obbligatorio);
+    \item[] D = Desiderevole;
 \end{itemize}
-}
-\label{uc:shipped}
-\end{usecase}
 
-\begin{usecase}{7.5}{Visualizza QR Code}
-\usecaseactorsP{Venditore}
-\usecasepre{Il Venditore si trova nella sezione "Visualizza Dettagli Singolo Ordine" (UC18) e desidera visualizzare il QR Code}
-\usecasepost{L’Utente ha visualizzato il QR Code}
-\usecasedesc{L’utente sta visualizzando i dettagli di un singolo ordine e sulla pagina è presente il QR Code legato all’ordine contenente l’indirizzo del compratore e l’id dell’ordine. Questa immagine può essere scaricata}
-\label{uc:visualizzazione-qrcode}
-\end{usecase}
+Le fonti dei requisiti possono essere le seguenti:
+\begin{itemize}
+    \item[] UC[numero]: indica un caso d'uso;
+    \item[] Committente: indica il capo del progetto.
+\end{itemize}
 
-%**************************************************************
-%\section{Analisi preventiva dei rischi}
+Nelle tabelle \ref{tab:requisiti-funzionali}, \ref{tab:requisiti-qualitativi} e sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
 
-%Durante la fase di analisi iniziale sono stati individuati alcuni possibili rischi a cui si potrà andare incontro.
-%Si è quindi proceduto a elaborare delle possibili soluzioni per far fronte a tali rischi.\\
+\rowcolors{2}{gray!25}{white}
 
-%\begin{risk}{Performance del simulatore hardware}
-%    \riskdescription{le performance del simulatore hardware e la comunicazione con questo potrebbero risultare lenti o non abbastanza buoni da causare il fallimento dei test}
-%    \risksolution{coinvolgimento del responsabile a capo del progetto relativo il simulatore hardware}
-%    \label{risk:hardware-simulator} 
-%\end{risk}
+\begin{longtable}[c]{|l|p{9cm}|l|}
+\caption{Tabella del tracciamento dei requisti funzionali}
+\label{tab:requisiti-funzionali}
+\hline
+\rowcolor{gray!40}
+\textbf{Codice} &
+\textbf{Descrizione} &
+\textbf{Fonti} \\ \hline
+\endhead
 
-%**************************************************************
-\section{Requisiti e obiettivi}
+\textbf{RFN 1} & Landing page che permetta di completare il pagamento & UC1 \\ \hline
 
+\textbf{RFN 1.1} & L’utente deve potersi connettere al proprio wallet tramite MetaMask & UC1 \\ \hline
 
-%**************************************************************
-\section{Pianificazione}
+\textbf{RFN 1.2} & L’utente deve poter visualizzare l’importo totale della transazione & UC2 \\ \hline
+
+\textbf{RFN 1.3} & L’utente deve poter visualizzare l’address del venditore & UC2 \\ \hline
+
+\textbf{RFN 1.4} & L’utente deve poter autorizzare la transazione, completando l’acquisto del prodotto & UC3 \\ \hline
+
+\textbf{RFN 2} & WebApp che permetta di visualizzare ed interagire con i propri ordini & UC4 \\ \hline
+
+\textbf{RFN 2.1} & L’utente deve potersi connettere al proprio wallet tramite MetaMask & UC1 \\ \hline
+
+\textbf{RFN 2.2} & L’utente deve poter visualizzare tutte le transazioni effettuate con ShopChain dai suoi indirizzi wallet collegati & UC4 \\ \hline
+
+\textbf{RFN 2.3} & L’utente deve poter filtrare le transazioni. & UC5 \\ \hline
+
+\textbf{RFN 2.3.1} & L’utente deve poter filtrare le transazioni in base al loro stato & UC5.1 \\ \hline
+
+\textbf{RFN 2.3.2} & L’utente deve poter filtrare le transazioni in base all’indirizzo & UC5.2 \\ \hline
+
+\textbf{RFN 2.3.3} & L’utente deve poter filtrare le transazioni in base al loro stato e all'indirizzo & UC5.3 \\ \hline
+
+\textbf{RFN 2.4} & L’utente deve poter visualizzare un singolo ordine della lista & UC4.1 \\ \hline
+
+\textbf{RFN 2.4.1} & L’utente deve poter l'id di un singolo ordine & UC4.1.1 \\ \hline
+
+\textbf{RFN 2.4.2} & L’utente deve poter visualizzare l'indirizzo del venditore di un singolo ordine & UC4.1.2 \\ \hline
+
+\textbf{RFN 2.4.3} & L’utente deve poter visualizzare il prezzo di un singolo ordine & UC4.1.3 \\ \hline
+
+\textbf{RFN 2.4.4} & L’utente deve poter visualizzare lo stato di un singolo ordine & UC4.1.4 \\ \hline
+
+\textbf{RFN 2.5} & L’utente deve poter chiedere il rimborso di un ordine & UC7.1 \\ \hline
+
+\textbf{RFN 2.6} & L’utente deve poter visualizzare il log di cambio stati di un ordine & UC7.2 \\ \hline
+
+\end{longtable}
+
+\begin{longtable}[c]{|l|p{9cm}|l|}
+\caption{Tabella del tracciamento dei requisti qualitativi}
+\label{tab:requisiti-qualitativi}
+\hline
+\rowcolor{gray!40}
+\textbf{Codice} &
+\textbf{Descrizione} &
+\textbf{Fonti} \\ \hline
+\endhead
+
+\textbf{RQN 1} & Deve essere fornito un documento tecnico che descriva le maschere & Committente \\ \hline
+
+\textbf{RQN 2} & Il codice deve essere condiviso su una repository pubblica & Committente\\ \hline
+
+\textbf{RQD 3} & L’applicazione web deve essere accessibile a utenti con disabilità & Committente\\ \hline
+
+\textbf{RQD 4} & L’applicazione web deve essere responsive & Committente\\ \hline
+
+\end{longtable}

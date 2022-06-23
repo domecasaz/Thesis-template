@@ -27,13 +27,13 @@ Angular Material è una libreria grafica creata appositamente per Angular ed è 
 \subsection*{Node.js}
 Node.js è un framework utilizzato da Angular per gestire le dipendenze. Permette
 di dichiarare due insiemi di dipendenze: per gli sviluppatori e per far funzionare
-l’applicativo. In questo modo è possibile differenziare quali librerie si possono tralasciare in fase di deploy dell’applicazione perché, ad esempio, necessarie solo per effettuare i test. Permette inoltre, usando dei semplici comandi, di scaricare all’interno del progetto le librerie necessarie, funzionalità molto utile in fase di \gls{cicdg}.\cite{site:node}
+l’applicativo. In questo modo è possibile differenziare quali librerie si possono tralasciare in fase di deploy dell’applicazione perché, ad esempio, necessarie solo per effettuare i test. Permette inoltre, usando dei semplici comandi, di scaricare all’interno del progetto le librerie necessarie, funzionalità molto utile in fase di \gls{cicdg}\glsfirstoccur.\cite{site:node}
 
 %**************************************************************
 \section{Progettazione}
 \label{sec:progettazione}
 
-\subsubsection{Architettura di Angular}
+\subsection{Architettura di Angular}
 Il componente principale di Angular è il modulo, che raggruppa un insieme di funzionalità legate tra loro. Ogni modulo contiene un component alla quale è associato un template.\\
 Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive.
 I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
@@ -46,4 +46,210 @@ padre mettere i figli insieme. Così facendo, si rende la struttura dell’appli
     \centering 
     \includegraphics[width=0.8\columnwidth]{immagini/AngularArchitecture.jpg} 
     \caption{Schema logico dell'architettura si un applicazione web basata su Angular}\cite{site:angular-architecture}
+\end{figure}
+
+%**************************************************************
+\subsection{Architettura dell'applicazione sviluppata}
+L’architettura dell’applicazione è stata progettata seguendo le best practise già consolidate nell’ambiente di Angular.\\
+Ogni maschera dell’applicazione deve avere una propria cartella contente il component, il template e il file di test ed eventualmente altri component figli.\\
+Sempre in concordanza con le best practise sono state create due cartelle: Components e Services.\\
+La cartella Components contiene tutte le cartelle dei componenti che costituiscono le maschere; la cartella Services contiene, invece, i service utilizzati dai componenti per dialogare con la blockchain.
+
+%**************************************************************
+
+\subsection{Progettazione delle maschere}
+
+Successivamente allo studio e alla comprensione dei requisiti del progetto ShopChain, sono stati sviluppati i mock-up delle maschere delle pagine dell'applicazione web così da avere un feedback dal committente prima di iniziare l'implementazione.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.8\columnwidth]{immagini/progettazione/homePage.jpg} 
+    \caption{Mock-up della pagina principale dell'applicazione web}
+\end{figure}
+
+In fase di progettazione delle maschere si è deciso che la struttura delle pagine deve essere simile ad altre applicazioni web di uso comune così da non disorientare l’utente. Tra le regole seguite:
+\begin{itemize}
+    \item Link di navigazione nella parte superiore della pagina;
+    \item I bottoni di eliminazione o di reset devono essere di colore differente rispetto agli altri bottoni. possibilmente di un colore tendente al rosso;
+    \item bottoni disabilitati devono avere un colore diverso dal loro stato normale così da far capire all’utente chiaramente quale sia il loro stato;
+    \item I campi dei form che risultano errati devono essere segnalati in colore rosso e con un messaggio di errore per avvisare l’utente che per procedere devono essere corretti.
+\end{itemize}
+
+%**************************************************************
+
+\subsection{Progettazione dello smart contract}
+
+Il progetto ShopChain, essendo serverless, dialoga solamente con la blockchain Avalanche tramite lo smart contract del progetto stesso. Per questo percorso di tirocinio si è utilizzato lo smart contract del progetto ShopChain già esistente con delle piccole modifiche per togliere la funzionalità di conversione dei token ERC20 in stablecoin per rendere le transazioni più veloci da essere minate in blockchain.
+
+%**************************************************************
+
+\section{Design Pattern implementati}
+
+\subsection*{Dependecy Injection}
+Il dependency injection è un pattern già integrato con Angular per migliorare l’efficienza e la modularità. Il dependency injection usato da Angular è di tipo constructor, questo prevede che in ogni componente vengano dichiarati nel costruttore di quali servizi ha bisogno e in fase di inizializzazione tali dipendenze gli vengono fornite dall’esterno.
+
+\subsection*{Singleton}
+Il singleton è un pattern già integrato con Angular che ha lo scopo di garantire che di un determinato servizio venga creata una e una sola istanza. Un altro vantaggio è che i servizi, condivisi tra più componenti, posso modificare il proprio stato in seguito ad una richiesta di un componente e condividere tale cambiamento con il resto dei componenti.
+
+\subsection{Guard Check}
+Il guard check è un pattern per la verifica degli input inseriti dall'utente, sia dal punto di vista sintattico sia dal punto di vista semantico. Questo pattern permette di avvisare l'utente se ha compilato in modo errato un campo di un form.
+
+\subsection{Observer}
+L’observer è un pattern che permette di rimanere in ’ascolto’ di determinati eventi. Questo pattern è stato utilizzato con le chiamate allo smart contract e la creazione di transazione perché possono richiedere un tempo variabile in base al traffico presente sulla blockchain.
+
+%**************************************************************
+\newpage
+\section{Codifica}
+
+\subsection{Maschere}
+
+\subsubsection*{\textit{Accesso}}
+Questa pagina permette all'utente di eseguire l'accesso al proprio wallet tramite MetaMask e di accedere alle funzionalità dell'applicazione web. Se MetaMask è già collegato ad un wallet all'utente basterà premere il pulsante "Connetti Wallet" per accedere all'applicazione web.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/autenticazione.png} 
+    \caption{Pagina di autenticazione}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item HeaderComponent;
+    \item \hyperref[sec:access-component]{AccessComponent}
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item SmartContractService.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Landing Page}}
+L'utente, dopo aver selezionato ShopChain come metodo di pagamento nell'e-commerce, viene reindirizzato in questa pagina. In questa pagina l'utente visualizza il riepilogo dell'ordine, cioè il prezzo da pagare e l'indirizzo del wallet del venditore. La pagina permette all'utente di creare la transazione, e di conseguenza l'ordine corrispondente, per effettuare il pagamento in criptovalute.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/landingpage.png} 
+    \caption{Pagina di pagamento e creazione ordine}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item HeaderComponent;
+    \item LandingPageComponent.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item SmartContractService.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Home Page}}
+In questa pagina l'utente può visualizzare la tabella con tutti gli ordini corrispondenti al wallet con cui è connesso a MetaMask. Di ogni ordine l'utente visualizza il suo numero univoco (Id), l'indirizzo del venditore del pacco collegato all'ordine, l'ammontare dell'ordine e lo stato in cui si trova; nella tabella è inoltre presente un pulsante per ogni ordine per visualizzare i dettagli dell'ordine corrispondente. Su questa lista di ordini l'utente può applicare i filtri per indirizzo e per stato, oltre che resettarli.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
+    \caption{Home page di ShopChain}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item HeaderComponent;
+    \item BuyerComponent;
+    \item OrdersComponent.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item SmartContractService.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Dettagli Ordine}}
+In questa pagina l'utente può visualizzare la tabella con le informazioni dell'ordine selezionato e, se l'ordine è in stato \textit{'Created', 'Shipped'} o \textit{'Confirmed'}, è presente il bottone "Ask Refund" che permette all'utente di chiedere il reso al venditore dell'ordine selezionato. Nella parte inferiore della pagina è presente la tabella contenente i log di cambio stato dell'ordine contenente lo stato dell'ordine e il timestamp di quando l'ordine è entrato in quel preciso stato.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/orderinfo.png} 
+    \caption{Pagina dei dettagli di un ordine}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item HeaderComponent;
+    \item OrderInfoComponent;
+    \item LogComponent.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item SmartContractService.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Switch Network}}
+Questa pagina di errore permette all'utente di collegarsi alla blockchain corretta tramite il bottone "Switch Network" tramite MetaMask.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/switchNetwork.png} 
+    \caption{Pagina di errore: connessione a blockchain sbagliata}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item HeaderComponent;
+    \item SwitchNetworkComponent.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item SmartContractService.
+\end{itemize}
+
+\newpage
+
+%**************************************************************
+
+\subsection{Componenti}
+
+\subsubsection*{\textit{AccessComponent}}
+\label{sec:access-component}
+Questo componente permette all'utente \textbf{non} autenticato di autenticarsi tramite MetaMask e di collegare il proprio wallet all'applicazione web.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/access.png} 
+    \caption{Componente AccessComponent}
+\end{figure}
+
+\subsubsection*{\textit{BuyerComponent}}
+\label{sec:buyer-component}
+Questo componente fa da contenitore ad una serie di altri componenti. Le funzionalità fornite sono:
+\begin{itemize}
+    \item Visualizzazione indirizzo smart contract di ShopChain, indirizzo wallet collegato e balance wallet collegato;
+    \item Visualizzazione lista ordini correlati al wallet collegato;
+    \item Filtraggio degli ordini per indirizzo venditore e stato dell'ordine.
+\end{itemize}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
+    \caption{Componente BuyerComponent}
+\end{figure}
+
+\subsubsection*{\textit{HeaderComponent}}
+\label{sec:header-component}
+Questo componente permette all'utente di visualizzare l'indirizzo e il balance del wallet collegato a MetaMask e fornisce anche un collegamento alla pagina web dell'explorer della blockchain corrispondente allo smart contract di ShopChain, per una maggiore trasparenza verso l'utente.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/header.png} 
+    \caption{Componente HeaderComponent}
 \end{figure}
