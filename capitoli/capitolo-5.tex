@@ -3,253 +3,92 @@
 % !TEX root = ../tesi.tex
 
 %**************************************************************
-\chapter{Progettazione e codifica}
-\label{cap:progettazione-codifica}
-%**************************************************************
+\chapter{Verifica e validazione}
+\label{cap:verifica-validazione}
 
-\intro{In questo capitolo vengono descritte in primo luogo le tecnologie utilizzate durante il progetto e in secondo luogo la progettazione e l’implementazione delle maschere e dei servizi dell’applicazione.}\\
+\section{Accessibilità}
+\subsection{Attributi HTML}
 
-%**************************************************************
-\section{Tecnologie}
-\label{sec:tecnologie-strumenti}
-
-Di seguito viene data una panoramica delle tecnologie e strumenti utilizzati.
-
-\subsection*{TypeScript}
-TypeScript è un linguaggio di programmazione open source che basa le sue caratteristiche su ECMAScript 6. Il linguaggio estende la sintassi del linguaggio JavaScript facendo si che qualsiasi programma scritto in JavaScript possa funzionare anche con TypeScript. Tra le principali funzionalità aggiuntive di TypeScript ci sono la possibilità di tipizzare le variabili e di creare interfacce e classi.\cite{site:typescript}
-
-\subsection*{Angular}
-Angular è un framework JavaScript open source per creare applicazioni web dinamiche grazie a una serie di funzionalità e strumenti forniti dallo stesso. L’architettura modulare consente di strutturare al meglio un’applicazione web e di avere un elevato riutilizzo del codice. Permette inoltre un’elevata manutenibilità in quanto ogni componente è adibito ad un’unica funzione. Utilizzato per sviluppare l’applicazione web.\cite{site:angular}
-
-\subsection*{Angular Material}
-Angular Material è una libreria grafica creata appositamente per Angular ed è basata sullo stile grafico di Google. Mette a disposizione componenti grafiche già implementate e testate anche dal punto di vista dell’accessibilità. Utilizzato per sviluppare la grafica delle pagine web.\cite{site:angular-material}
-
-\subsection*{Node.js}
-Node.js è un framework utilizzato da Angular per gestire le dipendenze. Permette
-di dichiarare due insiemi di dipendenze: per gli sviluppatori e per far funzionare
-l’applicativo. In questo modo è possibile differenziare quali librerie si possono tralasciare in fase di deploy dell’applicazione perché, ad esempio, necessarie solo per effettuare i test. Permette inoltre, usando dei semplici comandi, di scaricare all’interno del progetto le librerie necessarie, funzionalità molto utile in fase di \gls{cicdg}\glsfirstoccur.\cite{site:node}
-
-%**************************************************************
-\section{Progettazione}
-\label{sec:progettazione}
-
-\subsection{Architettura di Angular}
-Il componente principale di Angular è il modulo, che raggruppa un insieme di funzionalità legate tra loro. Ogni modulo contiene un component alla quale è associato un template.\\
-Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive.
-I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
-Le direttive vengono richiamate dai template e permettono di personalizzare il codice HTML creando dei tag propri che è poi possibile riutilizzare in diverse viste.\\
-Ogni component può contenere diversi component figli, in questo modo si può creare una maschera in modo modulare. Si può creare un component padre che rappresenta la pagina completa e poi diversi figli per ogni elemento contenuto in quella pagina,
-per esempio un component per il menu, un component per la sezione delle notizie e così via. Ognuno dei component figli si occuperà così di gestire la grafica di quella determinata funzionalità e di chiamare i servizi di cui necessita e sarà poi compito del
-padre mettere i figli insieme. Così facendo, si rende la struttura dell’applicazione più ordinata e il codice più mantenibile.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=0.8\columnwidth]{immagini/AngularArchitecture.jpg} 
-    \caption{Schema logico dell'architettura si un applicazione web basata su Angular}\cite{site:angular-architecture}
-\end{figure}
-
-%**************************************************************
-\subsection{Architettura dell'applicazione sviluppata}
-L’architettura dell’applicazione è stata progettata seguendo le best practise già consolidate nell’ambiente di Angular.\\
-Ogni maschera dell’applicazione deve avere una propria cartella contente il component, il template e il file di test ed eventualmente altri component figli.\\
-Sempre in concordanza con le best practise sono state create due cartelle: Components e Services.\\
-La cartella Components contiene tutte le cartelle dei componenti che costituiscono le maschere; la cartella Services contiene, invece, i service utilizzati dai componenti per dialogare con la blockchain.
-
-%**************************************************************
-
-\subsection{Progettazione delle maschere}
-
-Successivamente allo studio e alla comprensione dei requisiti del progetto ShopChain, sono stati sviluppati i mock-up delle maschere delle pagine dell'applicazione web così da avere un feedback dal committente prima di iniziare l'implementazione.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=0.8\columnwidth]{immagini/progettazione/homePage.jpg} 
-    \caption{Mock-up della pagina principale dell'applicazione web}
-\end{figure}
-
-In fase di progettazione delle maschere si è deciso che la struttura delle pagine deve essere simile ad altre applicazioni web di uso comune così da non disorientare l’utente. Tra le regole seguite:
+Per rendere l'applicazione web più accessibile sono stati utilizzati diversi attributi HTML specifici per l'accessibilità:
 \begin{itemize}
-    \item Link di navigazione nella parte superiore della pagina;
-    \item I bottoni di eliminazione o di reset devono essere di colore differente rispetto agli altri bottoni. possibilmente di un colore tendente al rosso;
-    \item bottoni disabilitati devono avere un colore diverso dal loro stato normale così da far capire all’utente chiaramente quale sia il loro stato;
-    \item I campi dei form che risultano errati devono essere segnalati in colore rosso e con un messaggio di errore per avvisare l’utente che per procedere devono essere corretti.
+    \item \textbf{scope}: utilizzato per facilitare la lettura delle tabelle agli screen reader;
+    \item \textbf{summary}: utilizzato per riassumere il contenuto di una tabella di piccole dimensioni;
+    \item \textbf{title}: utilizzato per descrivere gli elementi che altrimenti non sarebbero leggibili dagli screen reader, totalmente o parzialmente;
+    \item \textbf{lang}: utilizzato per indicare agli screen reader in che lingua leggere una parola o una frase diversa dall'italiano.
+\end{itemize}
+
+
+\subsection{Colori}
+I colori del sito sono stati selezionati per passare il test WCAG AA che richiede un rapporto di contrasti di almeno 4.5:1 per il testo normale e 3:1 per il testo in grassetto. Di seguito è riportata la tabella dei colori del testo e del loro sfondo e il loro rapporto di contrasto.
+
+\begin{longtable}[c]{|l|l|l|}
+\caption{Rapporto contrasto testo-sfondo}
+\label{tab:contrasto-colori}
+\\ \hline
+\rowcolor{gray!40}
+\textbf{Colore testo} &
+\textbf{Colore sfondo} &
+\textbf{Rapporto} \\ \hline
+\endhead
+
+\#FFFFFF & \#3F51B5 & 6.87:1 \\ \hline
+
+\#000000 & \#FFFFFF & 21:1 \\ \hline
+
+\#000000 & \#F2F2F2 & 18.75:1 \\ \hline
+
+\#FAF200 & \#3F51B5 & 5.81:1 \\ \hline
+
+\#000000 & \#FAF200 & 17.76:1 \\ \hline
+
+\#CF1507 & \#FFFFFF & 5.58:1 \\ \hline
+\end{longtable}
+
+
+\subsubsection{Altri elementi di accessibilità}
+\begin{itemize}
+    \item Sono stati rimossi i link circolari per evitare confusione negli utenti e permettere di identificare univocamente il percorso raggiunto;
+    \item Si sono evitati testi scorrevoli, lampeggianti, barrati ed in generale font troppo elaborati per agevolare la lettura;
+    \item Sono stati utilizzati gli attributi \gls{WAI-ARIA}\glsfirstoccur per specificare meglio alcuni elementi:
+    \begin{itemize}
+        \item \textbf{role}: usato per definire la funzione di alcuni tag;
+        \item \textbf{aria-hidden}: usato per nascondere elementi inutili agli screen reader perché già presenti descrizioni testuali.
+    \end{itemize}
 \end{itemize}
 
 %**************************************************************
 
-\subsection{Progettazione dello smart contract}
-
-Il progetto ShopChain, essendo serverless, dialoga solamente con la blockchain Avalanche tramite lo smart contract del progetto stesso. Per questo percorso di tirocinio si è utilizzato lo smart contract del progetto ShopChain già esistente con delle piccole modifiche per togliere la funzionalità di conversione dei token ERC20 in stablecoin per rendere le transazioni più veloci da essere minate in blockchain.
-
-%**************************************************************
-
-\section{Design Pattern implementati}
-
-\subsection*{Dependecy Injection}
-Il dependency injection è un pattern già integrato con Angular per migliorare l’efficienza e la modularità. Il dependency injection usato da Angular è di tipo constructor, questo prevede che in ogni componente vengano dichiarati nel costruttore di quali servizi ha bisogno e in fase di inizializzazione tali dipendenze gli vengono fornite dall’esterno.
-
-\subsection*{Singleton}
-Il singleton è un pattern già integrato con Angular che ha lo scopo di garantire che di un determinato servizio venga creata una e una sola istanza. Un altro vantaggio è che i servizi, condivisi tra più componenti, posso modificare il proprio stato in seguito ad una richiesta di un componente e condividere tale cambiamento con il resto dei componenti.
-
-\subsection{Guard Check}
-Il guard check è un pattern per la verifica degli input inseriti dall'utente, sia dal punto di vista sintattico sia dal punto di vista semantico. Questo pattern permette di avvisare l'utente se ha compilato in modo errato un campo di un form.
-
-\subsection{Observer}
-L’observer è un pattern che permette di rimanere in ’ascolto’ di determinati eventi. Questo pattern è stato utilizzato con le chiamate allo smart contract e la creazione di transazione perché possono richiedere un tempo variabile in base al traffico presente sulla blockchain.
-
-%**************************************************************
-\newpage
-\section{Codifica}
-
-\subsection{Maschere}
-
-\subsubsection*{\textit{Accesso}}
-Questa pagina permette all'utente di eseguire l'accesso al proprio wallet tramite MetaMask e di accedere alle funzionalità dell'applicazione web. Se MetaMask è già collegato ad un wallet all'utente basterà premere il pulsante "Connetti Wallet" per accedere all'applicazione web.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/autenticazione.png} 
-    \caption{Pagina di autenticazione}
-\end{figure}
-
-\paragraph{Componenti}
+\section{Validazione e collaudo}
+Una volta alla settimana è stata organizzata una riunione di allineamento con tutte le persone che stavano lavorando al progetto. In queste riunione si otteneva un feedback sul lavoro svolto fino a quel momento e una lista dei possibili cambiamenti da fare per raggiungere l’obiettivo voluto.\\
+Durante lo svolgimento del progetto sono stati definiti dei test di accettazione che l'applicazione deve passare per essere ritenuta conclusa.\\
+Di seguito vengono elencati i test di accettazione per il front end del progetto. Il codice dei test è così strutturato TA[numero], dove:
 \begin{itemize}
-    \item HeaderComponent;
-    \item \hyperref[sec:access-component]{AccessComponent}
+    \item \textbf{TA}: test di accettazione;
+    \item \textbf{[numero]}: indica un numero progressivo per identificare univocamente il test.
 \end{itemize}
 
-\paragraph{Servizi utilizzati}
-\begin{itemize}
-    \item SmartContractService.
-\end{itemize}
+\begin{longtable}[c]{|l|p{9cm}|l|}
+\caption{Test di accettazione}
+\label{tab:test-accettazione}
+\\ \hline
+\rowcolor{gray!40}
+\textbf{ID} &
+\textbf{Descrizione} &
+\textbf{Stato} \\ \hline
+\endhead
 
-\newpage
+TA1 & La landing page deve ricevere le informazioni dell'ordine appena creato nell'e-commerce & \checkmark \\ \hline
 
-\subsubsection*{\textit{Landing Page}}
-L'utente, dopo aver selezionato ShopChain come metodo di pagamento nell'e-commerce, viene reindirizzato in questa pagina. In questa pagina l'utente visualizza il riepilogo dell'ordine, cioè il prezzo da pagare e l'indirizzo del wallet del venditore. La pagina permette all'utente di creare la transazione, e di conseguenza l'ordine corrispondente, per effettuare il pagamento in criptovalute.
+TA2 & La landing page deve creare una transazione corrispondente all'ordine creato nell'e-commerce & \checkmark \\ \hline
 
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/landingpage.png} 
-    \caption{Pagina di pagamento e creazione ordine}
-\end{figure}
+TA3 & Una volta confermata la transazione, la landing page deve poter reindirizzare l'utente alla lista dei suoi ordini & \checkmark \\ \hline
 
-\paragraph{Componenti}
-\begin{itemize}
-    \item HeaderComponent;
-    \item LandingPageComponent.
-\end{itemize}
+TA4 & L'applicazione deve mostrare la lista degli ordini correlati al wallet attualmente connesso a MetaMask & \checkmark \\ \hline
 
-\paragraph{Servizi utilizzati}
-\begin{itemize}
-    \item SmartContractService.
-\end{itemize}
+TA5 & L'utente deve poter filtrare gli ordini per stato, per indirizzo venditore o per entrambi & \checkmark \\ \hline
 
-\newpage
+TA6 & L'utente deve poter richiedere il reso solo degli ordini in stato \textit{Created}, \textit{Shipped} e \textit{Confirmed} & \checkmark \\ \hline
 
-\subsubsection*{\textit{Home Page}}
-In questa pagina l'utente può visualizzare la tabella con tutti gli ordini corrispondenti al wallet con cui è connesso a MetaMask. Di ogni ordine l'utente visualizza il suo numero univoco (Id), l'indirizzo del venditore del pacco collegato all'ordine, l'ammontare dell'ordine e lo stato in cui si trova; nella tabella è inoltre presente un pulsante per ogni ordine per visualizzare i dettagli dell'ordine corrispondente. Su questa lista di ordini l'utente può applicare i filtri per indirizzo e per stato, oltre che resettarli.
+\end{longtable}
 
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
-    \caption{Home page di ShopChain}
-\end{figure}
-
-\paragraph{Componenti}
-\begin{itemize}
-    \item HeaderComponent;
-    \item BuyerComponent;
-    \item OrdersComponent.
-\end{itemize}
-
-\paragraph{Servizi utilizzati}
-\begin{itemize}
-    \item SmartContractService.
-\end{itemize}
-
-\newpage
-
-\subsubsection*{\textit{Dettagli Ordine}}
-In questa pagina l'utente può visualizzare la tabella con le informazioni dell'ordine selezionato e, se l'ordine è in stato \textit{'Created', 'Shipped'} o \textit{'Confirmed'}, è presente il bottone "Ask Refund" che permette all'utente di chiedere il reso al venditore dell'ordine selezionato. Nella parte inferiore della pagina è presente la tabella contenente i log di cambio stato dell'ordine contenente lo stato dell'ordine e il timestamp di quando l'ordine è entrato in quel preciso stato.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/orderinfo.png} 
-    \caption{Pagina dei dettagli di un ordine}
-\end{figure}
-
-\paragraph{Componenti}
-\begin{itemize}
-    \item HeaderComponent;
-    \item OrderInfoComponent;
-    \item LogComponent.
-\end{itemize}
-
-\paragraph{Servizi utilizzati}
-\begin{itemize}
-    \item SmartContractService.
-\end{itemize}
-
-\newpage
-
-\subsubsection*{\textit{Switch Network}}
-Questa pagina di errore permette all'utente di collegarsi alla blockchain corretta tramite il bottone "Switch Network" tramite MetaMask.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/switchNetwork.png} 
-    \caption{Pagina di errore: connessione a blockchain sbagliata}
-\end{figure}
-
-\paragraph{Componenti}
-\begin{itemize}
-    \item HeaderComponent;
-    \item SwitchNetworkComponent.
-\end{itemize}
-
-\paragraph{Servizi utilizzati}
-\begin{itemize}
-    \item SmartContractService.
-\end{itemize}
-
-\newpage
-
-%**************************************************************
-
-\subsection{Componenti}
-
-\subsubsection*{\textit{AccessComponent}}
-\label{sec:access-component}
-Questo componente permette all'utente \textbf{non} autenticato di autenticarsi tramite MetaMask e di collegare il proprio wallet all'applicazione web.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/componenti/access.png} 
-    \caption{Componente AccessComponent}
-\end{figure}
-
-\subsubsection*{\textit{BuyerComponent}}
-\label{sec:buyer-component}
-Questo componente fa da contenitore ad una serie di altri componenti. Le funzionalità fornite sono:
-\begin{itemize}
-    \item Visualizzazione indirizzo smart contract di ShopChain, indirizzo wallet collegato e balance wallet collegato;
-    \item Visualizzazione lista ordini correlati al wallet collegato;
-    \item Filtraggio degli ordini per indirizzo venditore e stato dell'ordine.
-\end{itemize}
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
-    \caption{Componente BuyerComponent}
-\end{figure}
-
-\subsubsection*{\textit{HeaderComponent}}
-\label{sec:header-component}
-Questo componente permette all'utente di visualizzare l'indirizzo e il balance del wallet collegato a MetaMask e fornisce anche un collegamento alla pagina web dell'explorer della blockchain corrispondente allo smart contract di ShopChain, per una maggiore trasparenza verso l'utente.
-
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=1\columnwidth]{immagini/componenti/header.png} 
-    \caption{Componente HeaderComponent}
-\end{figure}
+L'ultima settimana di stage è stata organizzata una presentazione finale dell'applicazione web per collaudare tutte le funzionalità richieste e verificare che passi i test di accettazione. Alla fine della presentazione è stata effettuata anche una revisione del codice sorgente insieme al tutor aziendale, superata con successo.

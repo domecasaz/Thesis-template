@@ -3,82 +3,461 @@
 % !TEX root = ../tesi.tex
 
 %**************************************************************
-\chapter{Analisi dei requisiti}
-\label{cap:analisi-requisiti}
+\chapter{Progettazione e codifica}
+\label{cap:progettazione-codifica}
 %**************************************************************
 
-\intro{Breve introduzione al capitolo}\\
+\intro{In questo capitolo vengono descritte in primo luogo le tecnologie utilizzate durante il progetto e in secondo luogo la progettazione e l’implementazione delle maschere e dei servizi dell’applicazione.}\\
 
-\section{Casi d'uso}
+%**************************************************************
+\section{Tecnologie}
+\label{sec:tecnologie-strumenti}
 
-Per lo studio dei casi di utilizzo del prodotto sono stati creati dei diagrammi.
-I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi di tipo \gls{uml} dedicati alla descrizione delle funzioni o servizi offerti da un sistema, così come sono percepiti e utilizzati dagli attori che interagiscono col sistema stesso.
-Essendo il progetto finalizzato alla creazione di un tool per l'automazione di un processo, le interazioni da parte dell'utilizzatore devono essere ovviamente ridotte allo stretto necessario. Per questo motivo i diagrammi d'uso risultano semplici e in numero ridotto.
+Di seguito viene data una panoramica delle tecnologie e strumenti utilizzati.
+
+\subsection*{TypeScript}
+TypeScript è un linguaggio di programmazione open source che basa le sue caratteristiche su ECMAScript 6. Il linguaggio estende la sintassi del linguaggio JavaScript facendo si che qualsiasi programma scritto in JavaScript possa funzionare anche con TypeScript. Tra le principali funzionalità aggiuntive di TypeScript ci sono la possibilità di tipizzare le variabili e di creare interfacce e classi.\cite{site:typescript}
+
+\subsection*{Angular}
+Angular è un framework JavaScript open source per creare applicazioni web dinamiche grazie a una serie di funzionalità e strumenti forniti dallo stesso. L’architettura modulare consente di strutturare al meglio un’applicazione web e di avere un elevato riutilizzo del codice. Permette inoltre un’elevata manutenibilità in quanto ogni componente è adibito ad un’unica funzione. Utilizzato per sviluppare l’applicazione web.\cite{site:angular}
+
+\subsection*{Angular Material}
+Angular Material è una libreria grafica creata appositamente per Angular ed è basata sullo stile grafico di Google. Mette a disposizione componenti grafiche già implementate e testate anche dal punto di vista dell’accessibilità. Utilizzato per sviluppare la grafica delle pagine web.\cite{site:angular-material}
+
+\subsection*{Node.js}
+Node.js è un framework utilizzato da Angular per gestire le dipendenze. Permette
+di dichiarare due insiemi di dipendenze: per gli sviluppatori e per far funzionare
+l’applicativo. In questo modo è possibile differenziare quali librerie si possono tralasciare in fase di deploy dell’applicazione perché, ad esempio, necessarie solo per effettuare i test. Permette inoltre, usando dei semplici comandi, di scaricare all’interno del progetto le librerie necessarie, funzionalità molto utile in fase di \gls{cicdg}\glsfirstoccur.\cite{site:node}
+
+%**************************************************************
+\section{Progettazione}
+\label{sec:progettazione}
+
+\subsection{Architettura di Angular}
+Il componente principale di Angular è il modulo, che raggruppa un insieme di funzionalità legate tra loro. Ogni modulo contiene un component alla quale è associato un template.\\
+Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive.
+I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
+Le direttive vengono richiamate dai template e permettono di personalizzare il codice HTML creando dei tag propri che è poi possibile riutilizzare in diverse viste.\\
+Ogni component può contenere diversi component figli, in questo modo si può creare una maschera in modo modulare. Si può creare un component padre che rappresenta la pagina completa e poi diversi figli per ogni elemento contenuto in quella pagina,
+per esempio un component per il menu, un component per la sezione delle notizie e così via. Ognuno dei component figli si occuperà così di gestire la grafica di quella determinata funzionalità e di chiamare i servizi di cui necessita e sarà poi compito del
+padre mettere i figli insieme. Così facendo, si rende la struttura dell’applicazione più ordinata e il codice più mantenibile.
 
 \begin{figure}[!h] 
     \centering 
-    %\includegraphics[width=0.9\columnwidth]{usecase/scenario-principale} 
-    \caption{Use Case - UC0: Scenario principale}
+    \includegraphics[width=0.8\columnwidth]{immagini/AngularArchitecture.jpg} 
+    \caption{Schema logico dell'architettura si un applicazione web basata su Angular}\cite{site:angular-architecture}
 \end{figure}
 
-\begin{usecase}{0}{Scenario principale}
-%\usecaseactors{Sviluppatore applicativi}
-\usecasepre{Lo sviluppatore è entrato nel plug-in di simulazione all'interno dell'IDE}
-\usecasedesc{La finestra di simulazione mette a disposizione i comandi per configurare, registrare o eseguire un test}
-\usecasepost{Il sistema è pronto per permettere una nuova interazione}
-\label{uc:scenario-principale}
-\end{usecase}
+%**************************************************************
+\subsection{Architettura dell'applicazione sviluppata}
+L’architettura dell’applicazione è stata progettata seguendo le best practise già consolidate nell’ambiente di Angular.\\
+Ogni maschera dell’applicazione deve avere una propria cartella contente il component, il template e il file di test ed eventualmente altri component figli.\\
+Sempre in concordanza con le best practise sono state create due cartelle: Components e Services.\\
+La cartella Components contiene tutte le cartelle dei componenti che costituiscono le maschere; la cartella Services contiene, invece, i service utilizzati dai componenti per dialogare con la blockchain.
 
-\section{Tracciamento dei requisiti}
+%**************************************************************
 
-Da un'attenta analisi dei requisiti e degli use case effettuata sul progetto è stata stilata la tabella che traccia i requisiti in rapporto agli use case.\\
-Sono stati individuati diversi tipi di requisiti e si è quindi fatto utilizzo di un codice identificativo per distinguerli.\\
-Il codice dei requisiti è così strutturato R(F/Q/V)(N/D/O) dove:
-\begin{enumerate}
-	\item[R =] requisito
-    \item[F =] funzionale
-    \item[Q =] qualitativo
-    \item[V =] di vincolo
-    \item[N =] obbligatorio (necessario)
-    \item[D =] desiderabile
-    \item[Z =] opzionale
-\end{enumerate}
-Nelle tabelle \ref{tab:requisiti-funzionali}, \ref{tab:requisiti-qualitativi} e \ref{tab:requisiti-vincolo} sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
+\subsection{Progettazione delle maschere}
+
+Successivamente allo studio e alla comprensione dei requisiti del progetto ShopChain, sono stati sviluppati i mock-up delle maschere delle pagine dell'applicazione web così da avere un feedback dal committente prima di iniziare l'implementazione.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.8\columnwidth]{immagini/progettazione/homePage.jpg} 
+    \caption{Mock-up della pagina principale dell'applicazione web}
+\end{figure}
+
+In fase di progettazione delle maschere si è deciso che la struttura delle pagine deve essere simile ad altre applicazioni web di uso comune così da non disorientare l’utente. Tra le regole seguite:
+\begin{itemize}
+    \item Link di navigazione nella parte superiore della pagina;
+    \item I bottoni di eliminazione o di reset devono essere di colore differente rispetto agli altri bottoni. possibilmente di un colore tendente al rosso;
+    \item bottoni disabilitati devono avere un colore diverso dal loro stato normale così da far capire all’utente chiaramente quale sia il loro stato;
+    \item I campi dei form che risultano errati devono essere segnalati in colore rosso e con un messaggio di errore per avvisare l’utente che per procedere devono essere corretti.
+\end{itemize}
+
+%**************************************************************
+
+\subsection{Progettazione dello smart contract}
+
+Il progetto ShopChain, essendo serverless, dialoga solamente con la blockchain Avalanche tramite lo smart contract del progetto stesso. Per questo percorso di tirocinio si è utilizzato lo smart contract del progetto ShopChain già esistente con delle piccole modifiche per togliere la funzionalità di conversione dei token ERC20 in stablecoin per rendere le transazioni più veloci da essere minate in blockchain.
+
+%**************************************************************
+
+\section{Design Pattern implementati}
+
+\subsection*{Dependecy Injection}
+Il dependency injection è un pattern già integrato con Angular per migliorare l’efficienza e la modularità. Il dependency injection usato da Angular è di tipo constructor, questo prevede che in ogni componente vengano dichiarati nel costruttore di quali servizi ha bisogno e in fase di inizializzazione tali dipendenze gli vengono fornite dall’esterno.
+
+\subsection*{Singleton}
+Il singleton è un pattern già integrato con Angular che ha lo scopo di garantire che di un determinato servizio venga creata una e una sola istanza. Un altro vantaggio è che i servizi, condivisi tra più componenti, posso modificare il proprio stato in seguito ad una richiesta di un componente e condividere tale cambiamento con il resto dei componenti.
+
+\subsection{Guard Check}
+Il guard check è un pattern per la verifica degli input inseriti dall'utente, sia dal punto di vista sintattico sia dal punto di vista semantico. Questo pattern permette di avvisare l'utente se ha compilato in modo errato un campo di un form.
+
+\subsection{Observer}
+L’observer è un pattern che permette di rimanere in ’ascolto’ di determinati eventi. Questo pattern è stato utilizzato con le chiamate allo smart contract e la creazione di transazione perché possono richiedere un tempo variabile in base al traffico presente sulla blockchain.
+
+%**************************************************************
+\newpage
+\section{Codifica}
+
+\subsection{Maschere}
+
+\subsubsection*{\textit{Accesso}}
+Questa pagina permette all'utente di eseguire l'accesso al proprio wallet tramite MetaMask e di accedere alle funzionalità dell'applicazione web. Se MetaMask è già collegato ad un wallet all'utente basterà premere il pulsante "Connetti Wallet" per accedere all'applicazione web.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/autenticazione.png} 
+    \caption{Pagina di autenticazione}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:access-component]{AccessComponent}.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
 
 \newpage
 
-\begin{table}%
-\caption{Tabella del tracciamento dei requisti funzionali}
-\label{tab:requisiti-funzionali}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RFN-1     & L'interfaccia permette di configurare il tipo di sonde del test & UC1 \\
-\hline
-\end{tabularx}
-\end{table}%
+\subsubsection*{\textit{Landing Page}}
+L'utente, dopo aver selezionato ShopChain come metodo di pagamento nell'e-commerce, viene reindirizzato in questa pagina. In questa pagina l'utente visualizza il riepilogo dell'ordine, cioè il prezzo da pagare e l'indirizzo del wallet del venditore. La pagina permette all'utente di creare la transazione, e di conseguenza l'ordine corrispondente, per effettuare il pagamento in criptovalute.
 
-\begin{table}%
-\caption{Tabella del tracciamento dei requisiti qualitativi}
-\label{tab:requisiti-qualitativi}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RQD-1    & Le prestazioni del simulatore hardware deve garantire la giusta esecuzione dei test e non la generazione di falsi negativi & - \\
-\hline
-\end{tabularx}
-\end{table}%
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/landingpage.png} 
+    \caption{Pagina di pagamento e creazione ordine}
+\end{figure}
 
-\begin{table}%
-\caption{Tabella del tracciamento dei requisiti di vincolo}
-\label{tab:requisiti-vincolo}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RVO-1    & La libreria per l'esecuzione dei test automatici deve essere riutilizzabile & - \\
-\hline
-\end{tabularx}
-\end{table}%
+\paragraph{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:landing-component]{LandingPageComponent}.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Home Page}}
+In questa pagina l'utente può visualizzare la tabella con tutti gli ordini corrispondenti al wallet con cui è connesso a MetaMask. Di ogni ordine l'utente visualizza il suo numero univoco (Id), l'indirizzo del venditore del pacco collegato all'ordine, l'ammontare dell'ordine e lo stato in cui si trova; nella tabella è inoltre presente un pulsante per ogni ordine per visualizzare i dettagli dell'ordine corrispondente. Su questa lista di ordini l'utente può applicare i filtri per indirizzo e per stato, oltre che resettarli.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
+    \caption{Home page di ShopChain}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:buyer-component]{BuyerComponent};
+    \item \hyperref[sec:orders-component]{OrdersComponent}.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Dettagli Ordine}}
+In questa pagina l'utente può visualizzare la tabella con le informazioni dell'ordine selezionato e, se l'ordine è in stato \textit{'Created', 'Shipped'} o \textit{'Confirmed'}, è presente il bottone "Ask Refund" che permette all'utente di chiedere il reso al venditore dell'ordine selezionato. Nella parte inferiore della pagina è presente la tabella contenente i log di cambio stato dell'ordine contenente lo stato dell'ordine e il timestamp di quando l'ordine è entrato in quel preciso stato.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/orderinfo.png} 
+    \caption{Pagina dei dettagli di un ordine}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:order-info-component]{OrderInfoComponent};
+    \item \hyperref[sec:log-component]{LogComponent}.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{Switch Network}}
+Questa pagina di errore permette all'utente di collegarsi alla blockchain corretta tramite il bottone "Switch Network" tramite MetaMask.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/switchNetwork.png} 
+    \caption{Pagina di errore: connessione a blockchain sbagliata}
+\end{figure}
+
+\paragraph{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:switch-component]{SwitchNetworkComponent}.
+\end{itemize}
+
+\paragraph{Servizi utilizzati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\newpage
+
+%**************************************************************
+
+\subsection{Componenti}
+
+\subsubsection*{\textit{AccessComponent}}
+\label{sec:access-component}
+Questo componente permette all'utente \textbf{non} autenticato di autenticarsi tramite MetaMask e di collegare il proprio wallet all'applicazione web.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/access.png} 
+    \caption{Componente AccessComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{connectWallet}: effettua, tramite SmartContractService, la connessione al wallet dell'utente tramite MetaMask.
+\end{itemize}
+
+
+\subsubsection*{\textit{BuyerComponent}}
+\label{sec:buyer-component}
+Questo componente fa da contenitore ad una serie di altri componenti. Le funzionalità fornite sono:
+\begin{itemize}
+    \item Visualizzazione indirizzo smart contract di ShopChain, indirizzo wallet collegato e balance wallet collegato;
+    \item Visualizzazione lista ordini correlati al wallet collegato;
+    \item Filtraggio degli ordini per indirizzo venditore e stato dell'ordine.
+\end{itemize}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/maschere/homepage.png} 
+    \caption{Componente BuyerComponent}
+\end{figure}
+
+\subsubsection{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:orders-component]{OrdersComponent}.
+\end{itemize}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente viene controllato, mediante il servizio SmartContractService, se l'utente è già collegato tramite MetaMask e se si trova sulla blockchain giusta;
+    \item \textbf{hasConnected}: event handler che risponde all'evento generato dal bottone "Connetti wallet" di \hyperref[sec:access-component]{AccessComponent}.
+\end{itemize}
+
+
+\subsubsection*{\textit{HeaderComponent}}
+\label{sec:header-component}
+Questo componente permette all'utente di visualizzare l'indirizzo e il balance del wallet collegato a MetaMask e fornisce anche un collegamento alla pagina web dell'explorer della blockchain corrispondente allo smart contract di ShopChain, per una maggiore trasparenza verso l'utente.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/header.png} 
+    \caption{Componente HeaderComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente vengono inizializzate le variabili contenenti l'indirizzo e il bilancio del wallet attualmente collegato a MetaMask tramite il servizio SmartContractService.
+\end{itemize}
+
+
+\subsubsection*{\textit{LandingPageComponent}}
+\label{sec:landing-component}
+Questo componente permette all'utente di visualizzare i dati dell'ordine di cui sta per effettuare il pagamento e permette all'utente di creare una transazione corrispondente all'ordine per completare il pagamento.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/landingpage.png} 
+    \caption{Componente LandingPageComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente viene controllato, mediante il servizio SmartContractService, se l'utente è già collegato tramite MetaMask e se si trova sulla blockchain giusta, inoltre recupera le informazioni dell'ordine dal server dell'e-commerce;
+    \item \textbf{hasConnected}: event handler che risponde all'evento generato dal bottone "Connetti wallet" di \hyperref[sec:access-component]{AccessComponent};
+    \item \textbf{fetchOrder}: metodo che recupera le informazioni dell'ordine di cui l'utente deve effettuare il pagamento dal server dell'e-commerce;
+    \item \textbf{createOrder}: metodo che crea la transazione da pagare tramite MetaMask al premere del bottone "Crea Ordine".
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{LogComponent}}
+\label{sec:log-component}
+Questo componente permette all'utente di visualizzare la tabella di cambio stato di un ordine.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/log.png} 
+    \caption{Componente LogComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente viene recuperato il log degli stati dell'ordine selezionato mediante il servizio SmartContractService.
+\end{itemize}
+
+
+\subsubsection*{\textit{OrderInfoComponent}}
+\label{sec:order-info-component}
+Questo componente permette all'utente di visualizzare i dettagli di un ordine e le operazioni da eseguire disponibili su quel determinato ordine.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/orderinfo.png} 
+    \caption{Componente OrderInfoComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente vengono recuperate le informazioni dell'ordine selezionato mediante il servizio SmartContractService;
+    \item \textbf{askRefund}: metodo che permette all'utente di richiedere il reso di un ordine tramite MetaMask.
+\end{itemize}
+
+
+\subsubsection*{\textit{OrdersComponent}}
+\label{sec:orders-component}
+Questo componente permette all'utente di visualizzare la lista degli ordini correlati al wallet con cui è collegato a MetaMask e permette di applicare i filtri per indirizzo e per stato dell'ordine.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/orders.png} 
+    \caption{Componente OrdersComponent}
+\end{figure}
+
+\subsubsection{Componenti}
+\begin{itemize}
+    \item \hyperref[sec:header-component]{HeaderComponent};
+    \item \hyperref[sec:log-component]{LogComponent}.
+\end{itemize}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{ngOnInit}: all’inizializzazione del componente vengono recuperate le informazioni del wallet collegato e degli ordini correlati ad esso mediante il servizio SmartContractService;
+    \item \textbf{getOrders}: metodo che recupera gli ordini dell'utente dallo smart contract;
+    \item \textbf{filterOrders}: metodo che applica i filtri selezionati dall'utente sulla lista degli ordini e mostra all'utente la lista di ordini che rispettano i filtri scelti, altrimenti un messaggio di errore e la lista completa degli ordini;
+    \item \textbf{resetFilters}: metodo che toglie i filtri selezionati dall'utente e mostra all'utente la lista completa degli ordini.
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\textit{SwitchNetworkComponent}}
+\label{sec:switch-component}
+Questo componente permette all'utente di collegarsi alla blockchain corretta tramite MetaMask nel caso in cui egli sia collegato alla blockchain sbagliata.
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=1\columnwidth]{immagini/componenti/switchNetwork.png} 
+    \caption{Componente SwitchNetworkComponent}
+\end{figure}
+
+\subsubsection{Servizi usati}
+\begin{itemize}
+    \item \hyperref[sec:smart-contract-service]{SmartContractService}.
+\end{itemize}
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{changeNetwork}: metodo che permette all'utente di collegarsi alla blockchain corretta tramite il servizio SmartContractService.
+\end{itemize}
+
+
+\subsection{Servizi}
+\subsubsection*{\textit{SmartContractService}}
+\label{sec:smart-contract-service}
+Questo servizio si occupa di gestire la comunicazione tra l'applicazione web e lo smart contract di ShopChain, presentando quindi tutti i metodi dello smart contract utili all'utente.
+
+\subsubsection{Metodi}
+\begin{itemize}
+    \item \textbf{getWebProvider}: metodo che istanzia un oggetto di tipo \textit{Web3Provider}, utile per la comunicazione con MetaMask;
+    \item \textbf{getContract}: metodo che istanzia lo smart contract di ShopChain per renderlo visibile all'interno dell'applicazione web;
+    \item \textbf{connectWallet}: metodo che connette il wallet dell'utente all'applicazione web tramite MetaMask;
+    \item \textbf{isRightChain}: metodo che controlla se l'utente è collegato alla blockchain corretta;
+    \item \textbf{setCurrentAddress}: metodo che salva in apposite variabili l'indirizzo e il bilancio del wallet attualmente collegato a MetaMask;
+    \item \textbf{getOrdersOfUser}: metodo che recupera dallo smart contract gli ordini correlati al wallet attualmente collegato;
+    \item \textbf{getOrderById}: metodo che ritorna l'ordine corrispondente all'id preso in input;
+    \item \textbf{getLog}: metodo che ritorna il log di cambio stato dell'ordine corrispondente all'id preso in input;
+    \item \textbf{createOrder}: metodo che crea una transazione in blockchain e l'ordine ad essa corrispondente nello smart contract;
+    \item \textbf{askRefund}: metodo che chiede il reso dell'ordine corrispondente all'id preso in input;
+    \item \textbf{listenerAccountChange}: metodo che resta in ascolto del cambio wallet collegato a MetaMask;
+    \item \textbf{listenerNetworkChange}: metodo che resta in ascolto del cambio della blockchain a cui è collegato l'utente;
+    \item \textbf{changeNetwork}: metodo che permette all'utente di collegarsi alla blockchain corretta tramite MetaMask.
+\end{itemize}
+
+%****************************************
+
+\newpage
+
+\section{Problematiche riscontrate}
+Durante l'implementazione del servizio SmartContractService non riuscivo ad accedere all'oggetto \textit{window.ethereum}, oggetto che viene iniettato da MetaMask ed utile a comunicare con blockchain basate su Ethereum. Dopo un'attenta ricerca e dopo aver consultato dei colleghi ho scoperto che Angular disincentiva l'uso diretto dell'oggetto \textit{window} e, di conseguenza, tutti gli oggetti da esso derivati. A questo punto ho trovato due soluzioni possibili al problema:
+\begin{enumerate}
+    \item Creare un servizio dedicato che, tramite una funzione esterna, avvolga l'oggetto \textit{window} e lo ritorni tramite un metodo pubblico;
+    \item Utilizzare il package di npm \textit{@metamask/detect-provider} per rilevare il provider iniettato nell'oggetto \textit{window.ethereum} se MetaMask è installato come estensione del browser utilizzato dall'utente.
+\end{enumerate}
+Dopo esser confrontato con dei colleghi e con il tutor aziendale ho optato per la soluzione n. 2 perché viene consigliata da molti sviluppatori online e nella documentazione di MetaMask stessa, inoltre la soluzione n. 1 non è molto elegante ed è solo uno stratagemma per aggirare il problema.\cite{site:ethereum-provider}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.9\columnwidth]{immagini/soluzione1.png} 
+    \caption{Esempio soluzione 1}
+\end{figure}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.9\columnwidth]{immagini/soluzione2.png} 
+    \caption{Esempio soluzione 2}
+\end{figure}
