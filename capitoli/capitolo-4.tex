@@ -35,12 +35,9 @@ l’applicativo. In questo modo è possibile differenziare quali librerie si pos
 
 \subsection{Architettura di Angular}
 Il componente principale di Angular è il modulo, che raggruppa un insieme di funzionalità legate tra loro. Ogni modulo contiene un component alla quale è associato un template.\\
-Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive.
-I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
+Un component è una classe che si occupa di gestire la vista e definire la logica del codice, mentre il template è la vista stessa dove viene definito codice HTML per visualizzare i dati contenuti nel component. Questi due elementi lavorano a stretto contatto con altri due componenti di Angular rispettivamente: servizi e direttive. I servizi vengono richiamati dai component e svolgono compiti ben precisi come ad esempio la gestione dell’autenticazione utente.\\
 Le direttive vengono richiamate dai template e permettono di personalizzare il codice HTML creando dei tag propri che è poi possibile riutilizzare in diverse viste.\\
-Ogni component può contenere diversi component figli, in questo modo si può creare una maschera in modo modulare. Si può creare un component padre che rappresenta la pagina completa e poi diversi figli per ogni elemento contenuto in quella pagina,
-per esempio un component per il menu, un component per la sezione delle notizie e così via. Ognuno dei component figli si occuperà così di gestire la grafica di quella determinata funzionalità e di chiamare i servizi di cui necessita e sarà poi compito del
-padre mettere i figli insieme. Così facendo, si rende la struttura dell’applicazione più ordinata e il codice più mantenibile.
+Ogni component può contenere diversi component figli, in questo modo si può creare una maschera in modo modulare. Si può creare un component padre che rappresenta la pagina completa e poi diversi figli per ogni elemento contenuto in quella pagina, per esempio un component per il menu, un component per la sezione delle notizie e così via. Ognuno dei component figli si occuperà così di gestire la grafica di quella determinata funzionalità e di chiamare i servizi di cui necessita e sarà poi compito del padre mettere i figli insieme. Così facendo, si rende la struttura dell’applicazione più ordinata e il codice più mantenibile.
 
 \begin{figure}[!h] 
     \centering 
@@ -83,7 +80,47 @@ Il progetto ShopChain, essendo serverless, dialoga solamente con la blockchain A
 
 %**************************************************************
 
+\section{Organizzazione dei componenti}
+Di seguito vengono riportati i diagrammi che raffigurano l'organizzazione dei componenti che costituiscono le viste principali dell'applicazione web, ovvero la landing page, in cui vengono effettuati i pagamenti, e la pagina principale, in cui è possibile visualizzare gli ordini dell'utente.
+
+\subsection*{Landing page}
+I diagramma dell'organizzazione dei componenti della landing page è rappresentato in Figura \ref{fig:components-landing-page}. Il componente \hyperref[sec:landing-component]{LandingPageComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
+\begin{itemize}
+    \item viene visualizzato il componente \hyperref[sec:access-component]{AccessComponent} se l'utente non ha ancora connesso il proprio wallet a MetaMask;
+    \item viene visualizzato il componente \hyperref[sec:switch-component]{SwitchNetworkComponent} se l'utente è collegato alla blockchain sbagliata;
+    \item altrimenti viene visualizzato il template del componente \hyperref[sec:landing-component]{LandingPageComponent}.
+\end{itemize}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.8\columnwidth]{immagini/LandingPageComponentsDiagram.png}
+    \caption{Diagramma dei componenti della landing page}
+    \label{fig:components-landing-page}
+\end{figure}
+
+\newpage
+
+\subsection*{Pagina principale}
+I diagramma dell'organizzazione dei componenti della landing page è rappresentato in Figura \ref{fig:components-main-page}. Il componente \hyperref[sec:buyer-component]{BuyerComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
+\begin{itemize}
+    \item viene visualizzato il componente \hyperref[sec:access-component]{AccessComponent} se l'utente non ha ancora connesso il proprio wallet a MetaMask;
+    \item viene visualizzato il componente \hyperref[sec:switch-component]{SwitchNetworkComponent} se l'utente è collegato alla blockchain sbagliata;
+    \item viene visualizzato il componente \hyperref[sec:order-info-component]{OrderInfoComponent}, con al suo interno il componente \hyperref[sec:log-component]{LogComponent}, se l'utente ha cliccato sul bottone di visualizzazione dei dettagli;
+    \item altrimenti viene visualizzato il componente \hyperref[sec:orders-component]{OrdersComponent}.
+\end{itemize}
+
+\begin{figure}[!h] 
+    \centering 
+    \includegraphics[width=0.8\columnwidth]{immagini/MainPageComponentsDiagram.png}
+    \caption{Diagramma dei componenti della pagina principale}
+    \label{fig:components-main-page}
+\end{figure}
+
+\newpage
+%**************************************************************
+
 \section{Design Pattern implementati}
+Durante l'implementazione delle maschere di front-end sono stati utilizzati alcuni design pattern già integrati nel framework Angular per una maggiore efficienza e sicurezza dell'applicativo.
 
 \subsection*{Dependecy Injection}
 Il dependency injection è un pattern già integrato con Angular per migliorare l’efficienza e la modularità. Il dependency injection usato da Angular è di tipo constructor, questo prevede che in ogni componente vengano dichiarati nel costruttore di quali servizi ha bisogno e in fase di inizializzazione tali dipendenze gli vengono fornite dall’esterno.
@@ -91,16 +128,16 @@ Il dependency injection è un pattern già integrato con Angular per migliorare 
 \subsection*{Singleton}
 Il singleton è un pattern già integrato con Angular che ha lo scopo di garantire che di un determinato servizio venga creata una e una sola istanza. Un altro vantaggio è che i servizi, condivisi tra più componenti, posso modificare il proprio stato in seguito ad una richiesta di un componente e condividere tale cambiamento con il resto dei componenti.
 
-\subsection{Guard Check}
+\subsection*{Guard Check}
 Il guard check è un pattern per la verifica degli input inseriti dall'utente, sia dal punto di vista sintattico sia dal punto di vista semantico. Questo pattern permette di avvisare l'utente se ha compilato in modo errato un campo di un form.
 
-\subsection{Observer}
+\subsection*{Observer}
 L’observer è un pattern che permette di rimanere in ’ascolto’ di determinati eventi. Questo pattern è stato utilizzato con le chiamate allo smart contract e la creazione di transazione perché possono richiedere un tempo variabile in base al traffico presente sulla blockchain.
 
 %**************************************************************
 \newpage
 \section{Codifica}
-
+Di seguito vengono descritte le maschere implementate con le loro funzionalità, i componenti coinvolti e i servizi utilizzati.
 \subsection{Maschere}
 
 \subsubsection*{\textit{Accesso}}
@@ -112,7 +149,7 @@ Questa pagina permette all'utente di eseguire l'accesso al proprio wallet tramit
     \caption{Pagina di autenticazione}
 \end{figure}
 
-\paragraph{Componenti}
+\paragraph{Componenti coinvolti}
 \begin{itemize}
     \item \hyperref[sec:header-component]{HeaderComponent};
     \item \hyperref[sec:access-component]{AccessComponent}.
@@ -134,7 +171,7 @@ L'utente, dopo aver selezionato ShopChain come metodo di pagamento nell'e-commer
     \caption{Pagina di pagamento e creazione ordine}
 \end{figure}
 
-\paragraph{Componenti}
+\paragraph{Componenti coinvolti}
 \begin{itemize}
     \item \hyperref[sec:header-component]{HeaderComponent};
     \item \hyperref[sec:landing-component]{LandingPageComponent}.
@@ -156,7 +193,7 @@ In questa pagina l'utente può visualizzare la tabella con tutti gli ordini corr
     \caption{Home page di ShopChain}
 \end{figure}
 
-\paragraph{Componenti}
+\paragraph{Componenti coinvolti}
 \begin{itemize}
     \item \hyperref[sec:header-component]{HeaderComponent};
     \item \hyperref[sec:buyer-component]{BuyerComponent};
@@ -179,7 +216,7 @@ In questa pagina l'utente può visualizzare la tabella con le informazioni dell'
     \caption{Pagina dei dettagli di un ordine}
 \end{figure}
 
-\paragraph{Componenti}
+\paragraph{Componenti coinvolti}
 \begin{itemize}
     \item \hyperref[sec:header-component]{HeaderComponent};
     \item \hyperref[sec:order-info-component]{OrderInfoComponent};
@@ -202,7 +239,7 @@ Questa pagina di errore permette all'utente di collegarsi alla blockchain corret
     \caption{Pagina di errore: connessione a blockchain sbagliata}
 \end{figure}
 
-\paragraph{Componenti}
+\paragraph{Componenti coinvolti}
 \begin{itemize}
     \item \hyperref[sec:header-component]{HeaderComponent};
     \item \hyperref[sec:switch-component]{SwitchNetworkComponent}.
@@ -443,21 +480,23 @@ Questo servizio si occupa di gestire la comunicazione tra l'applicazione web e l
 \newpage
 
 \section{Problematiche riscontrate}
-Durante l'implementazione del servizio SmartContractService non riuscivo ad accedere all'oggetto \textit{window.ethereum}, oggetto che viene iniettato da MetaMask ed utile a comunicare con blockchain basate su Ethereum. Dopo un'attenta ricerca e dopo aver consultato dei colleghi ho scoperto che Angular disincentiva l'uso diretto dell'oggetto \textit{window} e, di conseguenza, tutti gli oggetti da esso derivati. A questo punto ho trovato due soluzioni possibili al problema:
+Durante l'implementazione del servizio SmartContractService si riusciva ad accedere all'oggetto \textit{window.ethereum}, oggetto che viene iniettato da MetaMask ed utile a comunicare con blockchain basate su Ethereum. Dopo un'attenta ricerca e dopo aver consultato dei colleghi ho scoperto che Angular disincentiva l'uso diretto dell'oggetto \textit{window} e, di conseguenza, tutti gli oggetti da esso derivati. A questo punto ho trovato due soluzioni possibili al problema:
 \begin{enumerate}
-    \item Creare un servizio dedicato che, tramite una funzione esterna, avvolga l'oggetto \textit{window} e lo ritorni tramite un metodo pubblico;
-    \item Utilizzare il package di npm \textit{@metamask/detect-provider} per rilevare il provider iniettato nell'oggetto \textit{window.ethereum} se MetaMask è installato come estensione del browser utilizzato dall'utente.
+    \item \label{enum:soluzione1} Creare un servizio dedicato che, tramite una funzione esterna, avvolga l'oggetto \textit{window} e lo ritorni tramite un metodo pubblico (Figura \ref{fig:soluzione1});
+    \item \label{enum:soluzione2} Utilizzare il package di npm \textit{@metamask/detect-provider} per rilevare il provider iniettato nell'oggetto \textit{window.ethereum} se MetaMask è installato come estensione del browser utilizzato dall'utente (Figura \ref{fig:soluzione2}).
 \end{enumerate}
-Dopo esser confrontato con dei colleghi e con il tutor aziendale ho optato per la soluzione n. 2 perché viene consigliata da molti sviluppatori online e nella documentazione di MetaMask stessa, inoltre la soluzione n. 1 non è molto elegante ed è solo uno stratagemma per aggirare il problema.\cite{site:ethereum-provider}
+Dopo esser confrontato con dei colleghi e con il tutor aziendale ho optato per la soluzione \ref{enum:soluzione2} perché viene consigliata da molti sviluppatori online e nella documentazione di MetaMask stessa, inoltre la soluzione \ref{enum:soluzione1} non è molto elegante ed è solo uno stratagemma per aggirare il problema.\cite{site:ethereum-provider}
 
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=0.9\columnwidth]{immagini/soluzione1.png} 
     \caption{Esempio soluzione 1}
+    \label{fig:soluzione1}
 \end{figure}
 
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=0.9\columnwidth]{immagini/soluzione2.png} 
     \caption{Esempio soluzione 2}
+    \label{fig:soluzione2}
 \end{figure}

@@ -28,20 +28,19 @@ Sync Lab si pone come obiettivo principale quello di supportare il cliente nella
 \section{L'idea}
 L’avvento delle tecnologie su BlockChain ha portato in questi ultimi anni e porterà in futuro moltissimi cambiamenti sulla società. Indubbiamente il settore dove questa tecnologia trova il campo più fertile è quello economico/finanziario. L’avvento della criptomoneta Bitcoin, nel ‘lontano’ 2009, ha contribuito a porre le basi di una nuova ‘era finanziaria’ in cui non esiste più un regolatore, un ente che regolamenta e governa le politiche economico-finanziarie dei beni di scambio. Per questo si sono sviluppate presto molte altre cripto-monete diventate più o meno famose (Ethereum, Ripple, LiteCoin ecc.) accessibili a tutti senza bisogno di aprire un conto in banca.\\
 Successivamente sono nati gli smart contract, contratti (algoritmi) che vengono ‘minati’ nella catena ed eseguiti in autonomia (senza nessuna possibilità di modifica del codice o di controllo dall’esterno) al verificarsi di eventi interni alla piattaforma. Questo ha permesso l’implementazione di meccanismi di ‘tokenizzazione’ degli asset digitali (e non), e la definizione dello standard \gls{ercg}\glsfirstoccur  dei token su catena Ethereum (e di altri standard su altre catene). Da qui poi è nata quella che viene spesso definita la ‘DeFi’ (ossia Finanza Decentralizzata), una finanza fatta di asset digitali (token) che rimangono solo nei ledger delle blockchain.\\
-In questi ultimi mesi quindi per andare incontro a questa esigenze stanno nascendo delle piattaforme di e-commerce attraverso le quali è possibile acquistare beni/servizi usando direttamente la criptomoneta (per esempio
-\href{https://cryptoemporium.eu}{https://cryptoemporium.eu}). Grandi aziende come Tesla hanno annunciato che accetteranno il Bitcoin come forma di pagamento per gli acquisti dei loro prodotti.\\
-L’offerta di venditori che accettano pagamenti in criptomonete si sta sviluppando, manca però una tutela dell’acquirente. Pagando con questo sistema io verso del cripto denaro nel wallet di qualcuno e nessuno mi garantisce che sia affidabile e che mi consegnerà poi l’articolo acquistato.\\
-Non esiste ancora un PayPal che faccia da garante tra l’acquirente ed il venditore affinché vengano portate a termine in modo corretto da ambo le parti le operazioni di acquisto/ consegna/ ricezione dell’articolo.\\
-La Soluzione prospettata in questo progetto consiste nel realizzare un prototipo di una piattaforma in grado di ‘affiancare’ un cripto-e-commerce nella fasi di pagamento fino alla consegna.\\
-Si propone cioè la realizzazione su blockchain di una piattaforma che si incarichi di ricevere l’ammontare in criptovaluta e che lo trattenga e lo consegni al venditore solo quando il pacco viene recapitato all’acquirente. L’evento che scatena l’avvio della procedura sarà il trasferimento dei dati dell’ordine alla blockchain da parte dell’acquirente. La piattaforma a questo punto starà quindi in attesa di ricevere i soldi (ovviamente criptomonete da versare nel proprio wallet) dall’acquirente, quando li riceverà notificherà l’evento al venditore (che modificherà lo stato dell’ordine e spedirà l’articolo). Nel momento della consegna del pacco l’acquirente dovrà necessariamente inquadrare il QR code applicato sul collo che certifica l’avvenuta consegna. A questo punto quindi verrà effettuato il passaggio della criptovaluta dal wallet della piattaforma al wallet del venditore.\\
+In questi ultimi mesi quindi per andare incontro a questa esigenze stanno nascendo delle piattaforme di e-commerce attraverso le quali è possibile acquistare beni/servizi usando direttamente criptomonete (per esempio \href{https://cryptoemporium.eu}{https://cryptoemporium.eu}). Grandi aziende come Tesla hanno annunciato che accetteranno il Bitcoin come forma di pagamento per gli acquisti dei loro prodotti.\\
+L’offerta di venditori che accettano pagamenti in criptomonete si sta sviluppando, dove  manca però ancora una tutela dell’acquirente. Infatti, pagando con questo sistema il cripto denaro viene versato nel wallet un destinatario senza garanzia di affidabilità nel fornire i beni o i servizi offerti.\\
+Non esiste ancora un sistema simile a PayPal che faccia da garante tra l’acquirente ed il venditore affinché vengano portate a termine in modo corretto da ambo le parti le operazioni di acquisto/ consegna/ ricezione del bene o servizio.\\
+La soluzione prospettata in questo progetto consiste nel realizzare un prototipo di una piattaforma in grado di ‘affiancare’ un cripto-e-commerce dalle fasi di pagamento fino alla consegna.\\
+Si propone la realizzazione di una piattaforma su blockchain che si incarichi di ricevere l’ammontare in criptovaluta e che lo trattenga e lo consegni al venditore solo quando il pacco viene recapitato all’acquirente. L’evento che scatena l’avvio della procedura sarà il trasferimento dei dati dell’ordine alla blockchain da parte dell’acquirente. La piattaforma a questo punto starà quindi in attesa di ricevere i soldi (ovviamente criptomonete da versare nel proprio wallet) dall’acquirente, quando li riceverà notificherà l’evento al venditore (che modificherà lo stato dell’ordine e spedirà l’articolo). Nel momento della consegna del pacco l’acquirente dovrà necessariamente inquadrare il QR code applicato sul collo che certifica l’avvenuta consegna. A questo punto quindi verrà effettuato il passaggio della criptovaluta dal wallet della piattaforma al wallet del venditore.\\
 
 %**************************************************************
 \newpage
 %**************************************************************
 \section{Architettura del progetto}
-L’architettura di ShopChain è di tipo Fully Decentralized (Pure DApp).\\
-In una Pure DApp l'utente, dopo essersi connesso al proprio wallet, dal front-end può chiamare direttamente i metodi dello Smart Contract senza dover passare per un intermediario.
-Questo è possibile se il frontend viene hostato su servizio distribuito come ad esempio IPFS (InterPlanetary File System).\cite{site:ipfs}\\[0.2cm]
+L’architettura di ShopChain, rappresentata in Figura \ref{fig:pattern-architetturale}, è di tipo Fully Decentralized (Pure DApp).\\
+In una Pure DApp l'utente, dopo essersi connesso al proprio wallet, dal front-end può chiamare, tramite un'interfaccia, i metodi dello Smart Contract senza dover passare per un intermediario.
+Questo è possibile se il frontend viene ospitato su servizio distribuito come ad esempio IPFS (InterPlanetary File System).\cite{site:ipfs}\\[0.2cm]
 Vantaggi principali offerti dal pattern architetturale:
 \begin{itemize}
     \item Maggiore decentralizzazione (assenza di un server centralizzato);
@@ -52,17 +51,19 @@ Vantaggi principali offerti dal pattern architetturale:
     \centering 
     \includegraphics[width=0.9\columnwidth]{immagini/PatternArchitetturale.PNG}
     \caption{Interazione tra Wallet - Frontend - IPFS - Smart Contract \cite{site:dapp-architecture}}
+    \label{fig:pattern-architetturale}
 \end{figure}
 
 \subsection{Architettura nel dettaglio}
-L'architettura di ShopChain fa riferimento al \textit{"Pattern B – Self-Confirmed Transactions"} descritto nel paper \textit{"Engineering Software Architectures of Blockchain-Oriented Applications"} di F. Wessling e V. Gruhn dell'Università di Duisburg-Essen.\cite{site:paper-architectures-blockchain-oriented-applications} \\
-In questo paper il Pattern B consiste nell'interazione dell'utente solo con un'applicazione web e/o un gestore di wallet (in questo caso MetaMask) per creare transazioni su una blockchain: le transazioni non vengono create direttamente dall'utente ma vengono generate dall'applicazione web e poi mandate manualmente al nodo della blockchain a cui l'utente è collegato.\\
+L'architettura di ShopChain fa riferimento al \textit{"Pattern B – Self-Confirmed Transactions"} descritto nel paper \textit{"Engineering Software Architectures of Blockchain-Oriented Applications"} di F. Wessling e V. Gruhn dell'Università di Duisburg-Essen, raffigurata in Figura         \ref{fig:architettura-dapp}.\cite{site:paper-architectures-blockchain-oriented-applications} \\
+In questo paper il Pattern B consiste nell'interazione dell'utente solo con un'applicazione web e/o un gestore di wallet (in questo caso \gls{metamaskg}\glsfirstoccur) per creare transazioni su una blockchain: le transazioni non vengono create direttamente dall'utente ma vengono generate dall'applicazione web e poi mandate manualmente al nodo della blockchain a cui l'utente è collegato.\\
 Questo pattern bilancia sicurezza e facilità nell'interazione con la webApp perché creare transazioni manualmente è un'operazione difficile e realizzabile solo da utenti esperti, ma questo implica che chi interagisce con l'applicativo si fidi degli sviluppatori dato che la generazione di una transazione non è completamente trasparente.
 
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=0.9\columnwidth]{immagini/ArchitetturaDApp.png}
     \caption{DApp Pattern B - Self-Confirmed Transactions}
+    \label{fig:architettura-dapp}
 \end{figure}
 
 Applicando l'architettura appena descritta al progetto ShopChain si ottiene quindi:
