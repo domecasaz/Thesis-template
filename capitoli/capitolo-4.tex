@@ -42,14 +42,14 @@ Ogni component può contenere diversi component figli, in questo modo si può cr
 \begin{figure}[!h] 
     \centering 
     \includegraphics[width=0.8\columnwidth]{immagini/AngularArchitecture.jpg} 
-    \caption{Schema logico dell'architettura si un applicazione web basata su Angular}\cite{site:angular-architecture}
+    \caption{Schema logico dell'architettura di un applicazione web basata su Angular}\cite{site:angular-architecture}
 \end{figure}
 
 %**************************************************************
 \subsection{Architettura dell'applicazione sviluppata}
-L’architettura dell’applicazione è stata progettata seguendo le best practise già consolidate nell’ambiente di Angular.\\
+L’architettura dell’applicazione è stata progettata seguendo le best practice già consolidate nell’ambiente di Angular.\\
 Ogni maschera dell’applicazione deve avere una propria cartella contente il component, il template e il file di test ed eventualmente altri component figli.\\
-Sempre in concordanza con le best practise sono state create due cartelle: Components e Services.\\
+Sempre in concordanza con le best practice sono state create due cartelle: Components e Services.\\
 La cartella Components contiene tutte le cartelle dei componenti che costituiscono le maschere; la cartella Services contiene, invece, i service utilizzati dai componenti per dialogare con la blockchain.
 
 %**************************************************************
@@ -67,8 +67,8 @@ Successivamente allo studio e alla comprensione dei requisiti del progetto ShopC
 In fase di progettazione delle maschere si è deciso che la struttura delle pagine deve essere simile ad altre applicazioni web di uso comune così da non disorientare l’utente. Tra le regole seguite:
 \begin{itemize}
     \item Link di navigazione nella parte superiore della pagina;
-    \item I bottoni di eliminazione o di reset devono essere di colore differente rispetto agli altri bottoni. possibilmente di un colore tendente al rosso;
-    \item bottoni disabilitati devono avere un colore diverso dal loro stato normale così da far capire all’utente chiaramente quale sia il loro stato;
+    \item I bottoni di eliminazione o di reset devono essere di colore differente rispetto agli altri bottoni, possibilmente di un colore tendente al rosso;
+    \item I bottoni disabilitati devono avere un colore diverso dal loro stato normale così da far capire all’utente chiaramente quale sia il loro stato;
     \item I campi dei form che risultano errati devono essere segnalati in colore rosso e con un messaggio di errore per avvisare l’utente che per procedere devono essere corretti.
 \end{itemize}
 
@@ -84,7 +84,7 @@ Il progetto ShopChain, essendo serverless, dialoga solamente con la blockchain A
 Di seguito vengono riportati i diagrammi che raffigurano l'organizzazione dei componenti che costituiscono le viste principali dell'applicazione web, ovvero la landing page, in cui vengono effettuati i pagamenti, e la pagina principale, in cui è possibile visualizzare gli ordini dell'utente.
 
 \subsection*{Landing page}
-I diagramma dell'organizzazione dei componenti della landing page è rappresentato in Figura \ref{fig:components-landing-page}. Il componente \hyperref[sec:landing-component]{LandingPageComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
+Il diagramma dell'organizzazione dei componenti della landing page è rappresentato in Figura \ref{fig:components-landing-page}. Il componente \hyperref[sec:landing-component]{LandingPageComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
 \begin{itemize}
     \item viene visualizzato il componente \hyperref[sec:access-component]{AccessComponent} se l'utente non ha ancora connesso il proprio wallet a MetaMask;
     \item viene visualizzato il componente \hyperref[sec:switch-component]{SwitchNetworkComponent} se l'utente è collegato alla blockchain sbagliata;
@@ -101,7 +101,7 @@ I diagramma dell'organizzazione dei componenti della landing page è rappresenta
 \newpage
 
 \subsection*{Pagina principale}
-I diagramma dell'organizzazione dei componenti della landing page è rappresentato in Figura \ref{fig:components-main-page}. Il componente \hyperref[sec:buyer-component]{BuyerComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
+Il diagramma dell'organizzazione dei componenti della pagina principale è rappresentato in Figura \ref{fig:components-main-page}. Il componente \hyperref[sec:buyer-component]{BuyerComponent} renderizza sempre il componente figlio \hyperref[sec:header-component]{HeaderComponent}, mentre viene renderizzato un secondo componente figlio in base ai seguenti casi:
 \begin{itemize}
     \item viene visualizzato il componente \hyperref[sec:access-component]{AccessComponent} se l'utente non ha ancora connesso il proprio wallet a MetaMask;
     \item viene visualizzato il componente \hyperref[sec:switch-component]{SwitchNetworkComponent} se l'utente è collegato alla blockchain sbagliata;
@@ -480,12 +480,12 @@ Questo servizio si occupa di gestire la comunicazione tra l'applicazione web e l
 \newpage
 
 \section{Problematiche riscontrate}
-Durante l'implementazione del servizio SmartContractService si riusciva ad accedere all'oggetto \textit{window.ethereum}, oggetto che viene iniettato da MetaMask ed utile a comunicare con blockchain basate su Ethereum. Dopo un'attenta ricerca e dopo aver consultato dei colleghi ho scoperto che Angular disincentiva l'uso diretto dell'oggetto \textit{window} e, di conseguenza, tutti gli oggetti da esso derivati. A questo punto ho trovato due soluzioni possibili al problema:
+Durante l'implementazione del servizio SmartContractService non si riusciva ad accedere all'oggetto \textit{window.ethereum}, oggetto che viene iniettato da MetaMask ed utile a comunicare con blockchain basate su Ethereum. Dopo un'attenta ricerca e dopo aver consultato dei colleghi si è scoperto che Angular disincentiva l'uso diretto dell'oggetto \textit{window} e, di conseguenza, tutti gli oggetti da esso derivati. A questo punto sono state trovate due soluzioni possibili al problema:
 \begin{enumerate}
     \item \label{enum:soluzione1} Creare un servizio dedicato che, tramite una funzione esterna, avvolga l'oggetto \textit{window} e lo ritorni tramite un metodo pubblico (Figura \ref{fig:soluzione1});
     \item \label{enum:soluzione2} Utilizzare il package di npm \textit{@metamask/detect-provider} per rilevare il provider iniettato nell'oggetto \textit{window.ethereum} se MetaMask è installato come estensione del browser utilizzato dall'utente (Figura \ref{fig:soluzione2}).
 \end{enumerate}
-Dopo esser confrontato con dei colleghi e con il tutor aziendale ho optato per la soluzione \ref{enum:soluzione2} perché viene consigliata da molti sviluppatori online e nella documentazione di MetaMask stessa, inoltre la soluzione \ref{enum:soluzione1} non è molto elegante ed è solo uno stratagemma per aggirare il problema.\cite{site:ethereum-provider}
+Dopo essermi confrontato con dei colleghi e con il tutor aziendale si è optato per la soluzione \ref{enum:soluzione2} perché viene consigliata da molti sviluppatori online e nella documentazione di MetaMask stessa, inoltre la soluzione \ref{enum:soluzione1} non è molto elegante ed è solo uno stratagemma per aggirare il problema.\cite{site:ethereum-provider}
 
 \begin{figure}[!h] 
     \centering 
